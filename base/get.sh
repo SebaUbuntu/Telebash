@@ -40,22 +40,30 @@ get_specific_update() {
     get_updates "offset=$2" | jq ".result | .[$UPDATE_NUMBER]"
 }
 
+get_message() {
+	echo "$@" | jq ".message"
+}
+
+get_reply_to_message() {
+    get_message "$@" | jq "{message: .reply_to_message}"
+}
+
 get_message_id() {
-    echo "$@" | jq ".message.message_id"
+    get_message "$@" | jq ".message_id"
 }
 
 get_sender_id() {
-    echo "$@" | jq ".message.from.id"
+    get_message "$@" | jq ".from.id"
 }
 
 get_chat_id() {
-    echo "$@" | jq ".message.chat.id"
+    get_message "$@" | jq ".chat.id"
 }
 
 get_chat_type() {
-    echo "$@" | jq ".message.chat.type"
+    get_message "$@" | jq ".chat.type"
 }
 
 get_message_text() {
-    echo "$@" | jq ".message.text" | cut -d "\"" -f 2
+    get_message "$@" | jq ".text" | cut -d "\"" -f 2
 }
