@@ -30,7 +30,7 @@ if [ $(get_updates | jq .ok) = "true" ]; then
             CURRENT_UPDATES_NUMBER=0
             echo "Found $UNREAD_UPDATES_NUMBER update(s)"
             while [ "$UNREAD_UPDATES_NUMBER" -gt "$CURRENT_UPDATES_NUMBER" ]; do
-                base/main.sh "$CURRENT_UPDATES_NUMBER" "$LAST_UPDATE_ID"
+                base/main.sh "$(get_specific_update "$CURRENT_UPDATES_NUMBER" "$LAST_UPDATE_ID")"
                 CURRENT_UPDATES_NUMBER=$(( CURRENT_UPDATES_NUMBER + 1 ))
             done
             LAST_UPDATE_ID=$(( LAST_UPDATE_ID + UNREAD_UPDATES_NUMBER ))

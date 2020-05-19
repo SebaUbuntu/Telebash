@@ -15,17 +15,14 @@
 # limitations under the License.
 #
 
-# Source basic functions
-source base/get.sh
-source base/send.sh
-source base/modules_loader.sh
+import_modules() {
+    for module in $(ls modules/*/main.sh); do
+        source "$module"
+    done
 
-import_modules
-
-MESSAGE="$(get_message_text "$@")"
-
-#if echo "$AVAILABLE_COMMANDS" | grep -q "$MESSAGE"; then
-    module_$MESSAGE "$@"
-#else
-#    send_message "$(get_sender_id "$1" -d offset="$2")" "hi"
-#fi
+    for module_commands_file in $(ls modules/*/commands.txt); do
+        for commands in $(echo "$module_commands_file"); do
+            export AVAILABLE_COMMANDS="$AVAILABLE_COMMANDS $command"
+        done
+    done
+}
