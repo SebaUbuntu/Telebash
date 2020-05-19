@@ -29,15 +29,15 @@ get_unread_updates_number() {
 }
 
 get_last_update_id() {
-    UPDATES_NUMBER=$(get_unread_updates_number)
-    UPDATES_NUMBER=$(( "UPDATES_NUMBER" - "1" ))
-    get_updates $@ | jq ".result | .[$UPDATES_NUMBER] | .update_id"
+    UPDATE_NUMBER=$(get_unread_updates_number)
+    UPDATE_NUMBER=$(( "UPDATES_NUMBER" - "1" ))
+    get_updates $@ | jq ".result | .[$UPDATE_NUMBER] | .update_id"
 }
 
-get_specific_updates() {
-    UPDATES_NUMBER="$1"
+get_specific_update() {
+    UPDATE_NUMBER=$1
     shift
-    get_updates $@ | jq ".result | .[$UPDATES_NUMBER]"
+    get_updates "offset=$2" | jq ".result | .[$UPDATE_NUMBER]"
 }
 
 get_update_sender_id() {
