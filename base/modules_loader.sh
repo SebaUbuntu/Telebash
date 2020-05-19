@@ -16,13 +16,13 @@
 #
 
 import_modules() {
-    for module in $(ls modules/*/main.sh); do
-        source "$module"
-    done
+	for module in $(ls modules/*/main.sh); do
+		source "$module"
+	done
 
-    for module_commands_file in $(ls modules/*/commands.txt); do
-        for commands in $(echo "$module_commands_file"); do
-            export AVAILABLE_COMMANDS="$AVAILABLE_COMMANDS $command"
-        done
-    done
+	for module_commands_file in $(ls modules/*/commands.txt); do
+		for commands in $(cat "$module_commands_file"); do
+			export AVAILABLE_COMMANDS="$AVAILABLE_COMMANDS $commands"
+		done
+	done
 }

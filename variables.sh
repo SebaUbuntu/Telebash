@@ -16,10 +16,10 @@
 #
 
 import_variables() {
-    export TG_BOT_TOKEN=
+	export TG_BOT_TOKEN=
 }
 
 import_more_variables() {
-    export TG_API_URL=https://api.telegram.org/bot$TG_BOT_TOKEN
+	export TG_API_URL=https://api.telegram.org/bot$TG_BOT_TOKEN
 }
 

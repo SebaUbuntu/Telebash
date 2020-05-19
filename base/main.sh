@@ -22,10 +22,8 @@ source base/modules_loader.sh
 
 import_modules
 
-MESSAGE="$(get_message_text "$@")"
-
-#if echo "$AVAILABLE_COMMANDS" | grep -q "$MESSAGE"; then
-    module_$MESSAGE "$@"
-#else
-#    send_message "$(get_sender_id "$1" -d offset="$2")" "hi"
-#fi
+if echo "$AVAILABLE_COMMANDS" | grep -q "$(get_message_text "$@")"; then
+	module_"$(get_message_text "$@")" "$@"
+else
+	send_message "$(get_chat_id "$@")" "hi"
+fi
