@@ -15,16 +15,15 @@
 # limitations under the License.
 #
 
-# Source basic functions
-source base/get.sh
-source base/send.sh
-source base/admin.sh
-source base/modules_loader.sh
+ban_user() {
+	curl -s -X GET "$TG_API_URL/kickChatMember" -d chat_id="$1" -d user_id="$2" | jq .
+}
 
-import_modules
+unban_user() {
+	curl -s -X GET "$TG_API_URL/unbanChatMember" -d chat_id="$1" -d user_id="$2" | jq .
+}
 
-if echo "$AVAILABLE_COMMANDS" | grep -q "$(get_message_text "$@")"; then
-	module_"$(get_message_text "$@")" "$@"
-else
-	send_message "$(get_chat_id "$@")" "hi"
-fi
+kick_user() {
+	curl -s -X GET "$TG_API_URL/kickChatMember" -d chat_id="$1" -d user_id="$2" | jq .
+	curl -s -X GET "$TG_API_URL/unbanChatMember" -d chat_id="$1" -d user_id="$2" | jq .
+}
