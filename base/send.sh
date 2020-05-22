@@ -17,12 +17,12 @@
 
 # Arguments: <chatid> <message_text>
 send_message() {
-	curl -s -X POST "$TG_API_URL/sendMessage" -d chat_id="$1" -d text="$2" | jq .
+	curl -s -X POST "$TG_API_URL/sendMessage" -d chat_id="$1" -d text="$2" -d parse_mode="Markdown" | jq .
 }
 
 # Arguments: <chatid> <message_id> <message_text>
 edit_message() {
-	curl -s -X POST "$TG_API_URL/editMessageText" -d chat_id="$1" -d message_id="$2" -d text="$3" | jq .
+	curl -s -X POST "$TG_API_URL/editMessageText" -d chat_id="$1" -d message_id="$2" -d text="$3" parse_mode="Markdown" | jq .
 }
 
 # Arguments: <chatid> <document_path>
