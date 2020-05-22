@@ -21,9 +21,14 @@ export BRANCH=Alpha
 # Source variables and basic functions
 source variables.sh
 source base/get.sh
+source base/send.sh
+source base/admin.sh
+source base/modules.sh
 
 import_variables
 import_more_variables
+
+import_modules
 
 if [ $(get_updates | jq .ok) = "true" ]; then
 	LAST_UPDATE_ID=$(get_last_update_id)
@@ -33,7 +38,7 @@ if [ $(get_updates | jq .ok) = "true" ]; then
 			CURRENT_UPDATES_NUMBER=0
 			echo "Found $UNREAD_UPDATES_NUMBER update(s)"
 			while [ "$UNREAD_UPDATES_NUMBER" -gt "$CURRENT_UPDATES_NUMBER" ]; do
-				base/main.sh "$(get_specific_update "$CURRENT_UPDATES_NUMBER" "$LAST_UPDATE_ID")"
+				execute_module "$(get_specific_update "$CURRENT_UPDATES_NUMBER" "$LAST_UPDATE_ID")"
 				CURRENT_UPDATES_NUMBER=$(( CURRENT_UPDATES_NUMBER + 1 ))
 			done
 			LAST_UPDATE_ID=$(( LAST_UPDATE_ID + UNREAD_UPDATES_NUMBER ))

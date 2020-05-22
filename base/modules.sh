@@ -26,3 +26,14 @@ import_modules() {
 		done
 	done
 }
+
+execute_module() {
+	MESSAGE_TEXT="$(get_message_text "$@")"
+	if [[ "$MESSAGE_TEXT" == /* ]] || [[ "$MESSAGE_TEXT" == .* ]]; then
+		MESSAGE_TEXT=${MESSAGE_TEXT#?}
+		MESSAGE_TEXT_COMMAND=$(echo "$MESSAGE_TEXT" | head -n1 | awk '{print $1;}')
+		if echo "$AVAILABLE_COMMANDS" | grep -q "$MESSAGE_TEXT_COMMAND"; then
+			module_$MESSAGE_TEXT_COMMAND "$@"
+		fi
+	fi
+}
