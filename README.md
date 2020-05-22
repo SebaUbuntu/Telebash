@@ -10,7 +10,7 @@
   ./start.sh
   ```
 
-### What can you do until now:
+### What can it do until now:
 
-- If you write something to the bot it will reply "hi" (wow so exciting xdxd)
+- Basic admin stuff (ban, unban, kick)
 
