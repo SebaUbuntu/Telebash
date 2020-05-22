@@ -15,6 +15,9 @@
 # limitations under the License.
 #
 
+export VERSION=0.1.0
+export BRANCH=Alpha
+
 # Source variables and basic functions
 source variables.sh
 source base/get.sh
