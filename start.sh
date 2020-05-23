@@ -33,19 +33,23 @@ import_more_variables
 import_modules
 
 if [ $(get_updates | jq .ok) = "true" ]; then
-	LAST_UPDATE_ID=$(get_last_update_id)
 	while [ 0 != 1 ]; do
-		UNREAD_UPDATES_NUMBER="$(get_unread_updates_number -d offset="$LAST_UPDATE_ID")"
+		if [ "$LAST_UPDATE_ID" != "" ]; then
+			LAST_UPDATES=$(get_updates -d offset="$LAST_UPDATE_ID")
+		else
+			LAST_UPDATES=$(get_updates)
+		fi
+		UNREAD_UPDATES_NUMBER="$(get_unread_updates_number "$LAST_UPDATES")"
 		if [ "$UNREAD_UPDATES_NUMBER" != "0" ]; then
-			CURRENT_UPDATES_NUMBER=0
 			echo "Found $UNREAD_UPDATES_NUMBER update(s)"
+			CURRENT_UPDATES_NUMBER=0
 			while [ "$UNREAD_UPDATES_NUMBER" -gt "$CURRENT_UPDATES_NUMBER" ]; do
-				execute_module "$(get_specific_update "$CURRENT_UPDATES_NUMBER" "$LAST_UPDATE_ID")"
+				execute_module "$(get_specific_update "$LAST_UPDATES" "$CURRENT_UPDATES_NUMBER")"
 				CURRENT_UPDATES_NUMBER=$(( CURRENT_UPDATES_NUMBER + 1 ))
 			done
-			LAST_UPDATE_ID=$(( LAST_UPDATE_ID + UNREAD_UPDATES_NUMBER ))
+			LAST_UPDATE_ID=$(get_last_update_id "$LAST_UPDATES")
+			LAST_UPDATE_ID=$(( LAST_UPDATE_ID + 1 ))
 		fi
-		sleep 1
 	done
 else
 	echo "Error!"
