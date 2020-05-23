@@ -16,25 +16,24 @@
 #
 
 module_start() {
-	tg_send_message "$(tg_get_chat_id "$@")" "\`\`\`
-	------------------------------
-	SebaUbuntu's telegram bot,
-	written in Bash.
-	Version: $VERSION ($BRANCH)
-	Status: Working fine
-	------------------------------
-	\`\`\`"
+	tg_send_message "$(tg_get_chat_id "$@")" "Hi!
+This is a multifunction bot, written in Bash by SebaUbuntu, because Python is boring
+
+Version: $VERSION ($BRANCH)"
 }
 
 module_info() {
 	tg_send_message "$(tg_get_chat_id "$@")" "\`\`\`
-	------------------------------
-	SebaUbuntu's telegram bot,
-	written in Bash.
-	Version: $VERSION ($BRANCH)
-	Status: Working fine
-	------------------------------
-	\`\`\`"
+SebaUbuntu's Bash bot
+Version: $VERSION ($BRANCH)
+
+-----------------------------
+Status: Working fine
+Bash version: $BASH_VERSION
+Linux kernel version: $(uname -r)
+Architecture: $(uname -m)
+-----------------------------
+\`\`\`"
 }
 
 module_runs() {
