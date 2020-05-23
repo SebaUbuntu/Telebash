@@ -16,7 +16,7 @@
 #
 
 module_start() {
-	send_message "$(get_chat_id "$@")" "\`\`\`
+	tg_send_message "$(tg_get_chat_id "$@")" "\`\`\`
 	------------------------------
 	SebaUbuntu's telegram bot,
 	written in Bash.
@@ -27,7 +27,7 @@ module_start() {
 }
 
 module_info() {
-	send_message "$(get_chat_id "$@")" "\`\`\`
+	tg_send_message "$(tg_get_chat_id "$@")" "\`\`\`
 	------------------------------
 	SebaUbuntu's telegram bot,
 	written in Bash.
@@ -38,5 +38,5 @@ module_info() {
 }
 
 module_runs() {
-	send_message "$(get_chat_id "$@")" "🏃"
+	tg_send_message "$(tg_get_chat_id "$@")" "🏃"
 }

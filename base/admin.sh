@@ -15,15 +15,15 @@
 # limitations under the License.
 #
 
-ban_user() {
+tg_ban_user() {
 	curl -s -X GET "$TG_API_URL/kickChatMember" -d chat_id="$1" -d user_id="$2" | jq .
 }
 
-unban_user() {
+tg_unban_user() {
 	curl -s -X GET "$TG_API_URL/unbanChatMember" -d chat_id="$1" -d user_id="$2" | jq .
 }
 
-kick_user() {
+tg_kick_user() {
 	curl -s -X GET "$TG_API_URL/kickChatMember" -d chat_id="$1" -d user_id="$2" | jq .
 	curl -s -X GET "$TG_API_URL/unbanChatMember" -d chat_id="$1" -d user_id="$2" | jq .
 }

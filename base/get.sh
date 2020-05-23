@@ -16,68 +16,68 @@
 #
 
 # Arguments: <curl arguments>
-get_updates() {
+tg_get_updates() {
 	curl -s -X GET "$TG_API_URL/getUpdates" $@ | jq .
 }
 
 # Arguments: <update in JSON>
-get_update_result() {
+tg_get_update_result() {
 	echo "$@" | jq ".result"
 }
 
 # Arguments: <update in JSON>
-get_unread_updates() {
-	get_update_result "$@" | jq ".[]"
+tg_get_unread_updates() {
+	tg_get_update_result "$@" | jq ".[]"
 }
 
 # Arguments: <update in JSON>
-get_unread_updates_number() {
-	get_update_result "$@" | jq "length"
+tg_get_unread_updates_number() {
+	tg_get_update_result "$@" | jq "length"
 }
 
 # Arguments: <update in JSON> <offset>
-get_specific_update() {
-	get_update_result "$1" | jq ".[$2]"
+tg_get_specific_update() {
+	tg_get_update_result "$1" | jq ".[$2]"
 }
 
 # Arguments: <update in JSON>
-get_last_update_id() {
-	UPDATE_NUMBER=$(get_unread_updates_number "$@")
+tg_get_last_update_id() {
+	UPDATE_NUMBER=$(tg_get_unread_updates_number "$@")
 	UPDATE_NUMBER=$(( UPDATES_NUMBER - 1 ))
-	get_specific_update "$@" "$UPDATE_NUMBER" | jq ".update_id"
+	tg_get_specific_update "$@" "$UPDATE_NUMBER" | jq ".update_id"
 }
 
 # Arguments: <result in JSON>
-get_message() {
+tg_get_message() {
 	echo "$@" | jq ".message"
 }
 
 # Arguments: <message in JSON>
-get_reply_to_message() {
-	get_message "$@" | jq "{message: .reply_to_message}"
+tg_get_reply_to_message() {
+	tg_get_message "$@" | jq "{message: .reply_to_message}"
 }
 
 # Arguments: <message in JSON>
-get_message_id() {
-	get_message "$@" | jq ".message_id"
+tg_get_message_id() {
+	tg_get_message "$@" | jq ".message_id"
 }
 
 # Arguments: <message in JSON>
-get_sender_id() {
-	get_message "$@" | jq ".from.id"
+tg_get_sender_id() {
+	tg_get_message "$@" | jq ".from.id"
 }
 
 # Arguments: <message in JSON>
-get_chat_id() {
-	get_message "$@" | jq ".chat.id"
+tg_get_chat_id() {
+	tg_get_message "$@" | jq ".chat.id"
 }
 
 # Arguments: <message in JSON>
-get_chat_type() {
-	get_message "$@" | jq ".chat.type"
+tg_get_chat_type() {
+	tg_get_message "$@" | jq ".chat.type"
 }
 
 # Arguments: <message in JSON>
-get_message_text() {
-	get_message "$@" | jq ".text" | cut -d "\"" -f 2
+tg_get_message_text() {
+	tg_get_message "$@" | jq ".text" | cut -d "\"" -f 2
 }

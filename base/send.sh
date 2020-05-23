@@ -15,17 +15,23 @@
 # limitations under the License.
 #
 
-# Arguments: <chatid> <message_text>
-send_message() {
-	curl -s -X POST "$TG_API_URL/sendMessage" -d chat_id="$1" -d text="$2" -d parse_mode="Markdown" | jq .
+# Arguments: <function> <curl flags>
+tg_send() {
+	FUNCTION="$1"
+	shift
+	curl -s -S -X POST "$TG_API_URL/$FUNCTION" "$@" | jq .
+}
+
+tg_send_message() {
+	tg_send "sendMessage" -d chat_id="$1" -d text="$2" -d parse_mode="Markdown"
 }
 
 # Arguments: <chatid> <message_id> <message_text>
-edit_message() {
-	curl -s -X POST "$TG_API_URL/editMessageText" -d chat_id="$1" -d message_id="$2" -d text="$3" parse_mode="Markdown" | jq .
+tg_edit_message() {
+	tg_send "editMessageText" -d chat_id="$1" -d message_id="$2" -d text="$3" parse_mode="Markdown"
 }
 
 # Arguments: <chatid> <document_path>
-send_file() {
-	curl -s -X POST "$TG_API_URL/sendDocument" -d chat_id="$1" -F name=document -F document=@"$2" -H "Content-Type:multipart/form-data" | jq .
+tg_send_file() {
+	tg_send "sendDocument" -d chat_id="$1" -F name=document -F document=@"$2" -H "Content-Type:multipart/form-data"
 }

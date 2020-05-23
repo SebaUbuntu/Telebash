@@ -16,60 +16,60 @@
 #
 
 module_ban() {
-	if [ "$(get_sender_id "$(get_reply_to_message "$@")")" != "null" ]; then
-		ban_user "$(get_chat_id "$@")" "$(get_sender_id "$(get_reply_to_message "$@")")"
-		send_message "$(get_chat_id "$@")" "$(get_sender_id "$(get_reply_to_message "$@")") banned successfully"
-	elif [ "$(get_message_text "$@" | awk '{print $2}')" != "" ]; then
-		USER_ID="$(get_message_text "$@" | awk '{print $2}')"
-		if echo "$(get_message_text "$@" | awk '{print $2}')" | grep -q "@"; then
-			send_message "$(get_chat_id "$@")" "Banning through username is not supported, reply to a message or provide a user id"
+	if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
+		tg_ban_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
+		tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") banned successfully"
+	elif [ "$(tg_get_message_text "$@" | awk '{print $2}')" != "" ]; then
+		USER_ID="$(tg_get_message_text "$@" | awk '{print $2}')"
+		if echo "$(tg_get_message_text "$@" | awk '{print $2}')" | grep -q "@"; then
+			tg_send_message "$(tg_get_chat_id "$@")" "Banning through username is not supported, reply to a message or provide a user id"
 		else
-			ban_user "$(get_chat_id "$@")" "$(get_message_text "$@" | awk '{print $2}')"
-			send_message "$(get_chat_id "$@")" "$(get_message_text "$@" | awk '{print $2}') banned successfully"
+			tg_ban_user "$(tg_get_chat_id "$@")" "$(tg_get_message_text "$@" | awk '{print $2}')"
+			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_message_text "$@" | awk '{print $2}') banned successfully"
 		fi
 	else
-		send_message "$(get_chat_id "$@")" "Please reply to a message or write the user id to unban that user"
+		tg_send_message "$(tg_get_chat_id "$@")" "Please reply to a message or write the user id to unban that user"
 	fi
 }
 
 module_unban() {
-	if [ "$(get_sender_id "$(get_reply_to_message "$@")")" != "null" ]; then
-		unban_user "$(get_chat_id "$@")" "$(get_sender_id "$(get_reply_to_message "$@")")"
-		send_message "$(get_chat_id "$@")" "$(get_sender_id "$(get_reply_to_message "$@")") unbanned successfully"
-	elif [ "$(get_message_text "$@" | awk '{print $2}')" != "" ]; then
-		if echo "$(get_message_text "$@" | awk '{print $2}')" | grep -q "@"; then
-			send_message "$(get_chat_id "$@")" "Unbanning through username is not supported, reply to a message or provide a user id"
+	if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
+		tg_unban_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
+		tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") unbanned successfully"
+	elif [ "$(tg_get_message_text "$@" | awk '{print $2}')" != "" ]; then
+		if echo "$(tg_get_message_text "$@" | awk '{print $2}')" | grep -q "@"; then
+			tg_send_message "$(tg_get_chat_id "$@")" "Unbanning through username is not supported, reply to a message or provide a user id"
 		else
-			unban_user "$(get_chat_id "$@")" "$(get_message_text "$@" | awk '{print $2}')"
-			send_message "$(get_chat_id "$@")" "$(get_message_text "$@" | awk '{print $2}') kicked successfully"
+			tg_unban_user "$(tg_get_chat_id "$@")" "$(tg_get_message_text "$@" | awk '{print $2}')"
+			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_message_text "$@" | awk '{print $2}') kicked successfully"
 		fi
 	else
-		send_message "$(get_chat_id "$@")" "Please reply to a message or write the username to unban that user"
+		tg_send_message "$(tg_get_chat_id "$@")" "Please reply to a message or write the username to unban that user"
 	fi
 }
 
 module_kick() {
-	if [ "$(get_sender_id "$(get_reply_to_message "$@")")" != "null" ]; then
-		kick_user "$(get_chat_id "$@")" "$(get_sender_id "$(get_reply_to_message "$@")")"
-		send_message "$(get_chat_id "$@")" "$(get_sender_id "$(get_reply_to_message "$@")") kicked successfully"
-	elif [ "$(get_message_text "$@" | awk '{print $2}')" != "" ]; then
-		if echo "$(get_message_text "$@" | awk '{print $2}')" | grep -q "@"; then
-			send_message "$(get_chat_id "$@")" "Kicking through username is not supported, reply to a message or provide a user id"
+	if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
+		tg_kick_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
+		tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") kicked successfully"
+	elif [ "$(tg_get_message_text "$@" | awk '{print $2}')" != "" ]; then
+		if echo "$(tg_get_message_text "$@" | awk '{print $2}')" | grep -q "@"; then
+			tg_send_message "$(tg_get_chat_id "$@")" "Kicking through username is not supported, reply to a message or provide a user id"
 		else
-			kick_user "$(get_chat_id "$@")" "$(get_message_text "$@" | awk '{print $2}')"
-			send_message "$(get_chat_id "$@")" "$(get_message_text "$@" | awk '{print $2}') kicked successfully"
+			tg_kick_user "$(tg_get_chat_id "$@")" "$(tg_get_message_text "$@" | awk '{print $2}')"
+			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_message_text "$@" | awk '{print $2}') kicked successfully"
 		fi
 	else
-		send_message "$(get_chat_id "$@")" "Please reply to a message or write the username to kick that user"
+		tg_send_message "$(tg_get_chat_id "$@")" "Please reply to a message or write the username to kick that user"
 	fi
 }
 
 module_mute() {
-	#send_message "$(get_chat_id "$@")" "Muted successfully"
-	send_message "$(get_chat_id "$@")" "WIP"
+	#tg_send_message "$(get_chat_id "$@")" "Muted successfully"
+	tg_send_message "$(tg_get_chat_id "$@")" "WIP"
 }
 
 module_unmute() {
-	#send_message "$(get_chat_id "$@")" "Unmuted successfully"
-	send_message "$(get_chat_id "$@")" "WIP"
+	#tg_send_message "$(get_chat_id "$@")" "Unmuted successfully"
+	tg_send_message "$(tg_get_chat_id "$@")" "WIP"
 }

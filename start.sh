@@ -32,22 +32,22 @@ import_more_variables
 
 import_modules
 
-if [ $(get_updates | jq .ok) = "true" ]; then
+if [ $(tg_get_updates | jq .ok) = "true" ]; then
 	while [ 0 != 1 ]; do
 		if [ "$LAST_UPDATE_ID" != "" ]; then
-			LAST_UPDATES=$(get_updates -d offset="$LAST_UPDATE_ID")
+			LAST_UPDATES=$(tg_get_updates -d offset="$LAST_UPDATE_ID")
 		else
-			LAST_UPDATES=$(get_updates)
+			LAST_UPDATES=$(tg_get_updates)
 		fi
-		UNREAD_UPDATES_NUMBER="$(get_unread_updates_number "$LAST_UPDATES")"
+		UNREAD_UPDATES_NUMBER="$(tg_get_unread_updates_number "$LAST_UPDATES")"
 		if [ "$UNREAD_UPDATES_NUMBER" != "0" ]; then
 			echo "Found $UNREAD_UPDATES_NUMBER update(s)"
 			CURRENT_UPDATES_NUMBER=0
 			while [ "$UNREAD_UPDATES_NUMBER" -gt "$CURRENT_UPDATES_NUMBER" ]; do
-				execute_module "$(get_specific_update "$LAST_UPDATES" "$CURRENT_UPDATES_NUMBER")"
+				execute_module "$(tg_get_specific_update "$LAST_UPDATES" "$CURRENT_UPDATES_NUMBER")"
 				CURRENT_UPDATES_NUMBER=$(( CURRENT_UPDATES_NUMBER + 1 ))
 			done
-			LAST_UPDATE_ID=$(get_last_update_id "$LAST_UPDATES")
+			LAST_UPDATE_ID=$(tg_get_last_update_id "$LAST_UPDATES")
 			LAST_UPDATE_ID=$(( LAST_UPDATE_ID + 1 ))
 		fi
 	done

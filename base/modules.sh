@@ -28,7 +28,7 @@ import_modules() {
 }
 
 execute_module() {
-	MESSAGE_TEXT="$(get_message_text "$@")"
+	MESSAGE_TEXT="$(tg_get_message_text "$@")"
 	if [[ "$MESSAGE_TEXT" == /* ]] || [[ "$MESSAGE_TEXT" == .* ]]; then
 		MESSAGE_TEXT=${MESSAGE_TEXT#?}
 		MESSAGE_TEXT_COMMAND=$(echo "$MESSAGE_TEXT" | head -n1 | awk '{print $1;}')

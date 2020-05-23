@@ -53,16 +53,16 @@ ci_parse_arguments() {
 }
 
 ci_edit_message() {
-	edit_message "$(get_chat_id "$1")" "$CI_MESSAGE_ID" "CI building
+	tg_edit_message "$(tg_get_chat_id "$1")" "$CI_MESSAGE_ID" "CI building
 Device: $CI_DEVICE
 Type: $CI_TYPE
 $CI_TYPE project: $CI_PROJECT
 Status: $2"
 }
 
-ci_parse_arguments $(get_message_text "$@" | cut -d' ' -f2-)
+ci_parse_arguments $(tg_get_message_text "$@" | cut -d' ' -f2-)
 if [ "$CI_DEVICE" != "" ] && [ "$CI_PROJECT" != "" ] && [ "$CI_TYPE" != "" ] && $([ "$CI_TYPE" = "Recovery" ] || $([ "$CI_TYPE" = "ROM" ] && [ "$CI_LUNCH_PREFIX" != "" ])) && [ -d "$CI_MAIN_DIR/$CI_PROJECT" ]; then
-	CI_MESSAGE_ID=$(send_message "$(get_chat_id "$@")" "CI building
+	CI_MESSAGE_ID=$(tg_send_message "$(tg_get_chat_id "$@")" "CI building
 Device: $CI_DEVICE
 Type: $CI_TYPE
 $CI_TYPE project: $CI_PROJECT
@@ -101,7 +101,7 @@ Status: Waking up..." | jq .result.message_id)
 			break
 	fi
 else
-	send_message "$(get_chat_id "$@")" "CI building failed: missing arguments or wrong building path
+	tg_send_message "$(tg_get_chat_id "$@")" "CI building failed: missing arguments or wrong building path
 \`\`\`
 Usage: /ci <dir path> [arguments]
  -d <codename> 
