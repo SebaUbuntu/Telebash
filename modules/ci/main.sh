@@ -15,13 +15,10 @@
 # limitations under the License.
 #
 
-import_variables() {
-	export TG_BOT_TOKEN=
-	export CI_APPROVED_USER_IDS= # Add user ID and separate them with a space
-	export CI_MAIN_DIR= # This folder needs to contain every ROMs and recoveries sources with proper folder naming (eg. the folder contains "LineageOS-17.1" folder, so when you launch the command it will cd into Lineage-17.1 folder and starting building). Add a slash at the end of the path (eg. /home/user/)
+module_ci() {
+	if echo "$(get_sender_id "$@")" | grep -q "$CI_AUTHORIZED_USER_IDS"; then
+		modules/ci/build.sh "$@" &
+	else
+		send_message "$(get_chat_id "$@")" "Error: you are not authorized to use CI function of this bot, ask to who host this bot to add you to the authorized people list"
+	fi
 }
-
-import_more_variables() {
-	export TG_API_URL=https://api.telegram.org/bot$TG_BOT_TOKEN
-}
-
