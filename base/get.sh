@@ -20,31 +20,34 @@ get_updates() {
 	curl -s -X GET "$TG_API_URL/getUpdates" $@ | jq .
 }
 
-# Arguments: <curl arguments>
-get_unread_updates() {
-	get_updates $@ | jq ".result | .[]"
-}
-
-# Arguments: <curl arguments>
-get_unread_updates_number() {
-	get_updates $@ | jq ".result | length"
-}
-
-# Arguments: <curl arguments>
-get_last_update_id() {
-	UPDATE_NUMBER=$(get_unread_updates_number)
-	UPDATE_NUMBER=$(( "UPDATES_NUMBER" - "1" ))
-	get_updates $@ | jq ".result | .[$UPDATE_NUMBER] | .update_id"
-}
-
-# Arguments: <update number> <offset>
-get_specific_update() {
-	UPDATE_NUMBER=$1
-	shift
-	get_updates "offset=$2" | jq ".result | .[$UPDATE_NUMBER]"
+# Arguments: <update in JSON>
+get_update_result() {
+	echo "$@" | jq ".result"
 }
 
 # Arguments: <update in JSON>
+get_unread_updates() {
+	get_update_result "$@" | jq ".[]"
+}
+
+# Arguments: <update in JSON>
+get_unread_updates_number() {
+	get_update_result "$@" | jq "length"
+}
+
+# Arguments: <update in JSON> <offset>
+get_specific_update() {
+	get_update_result "$1" | jq ".[$2]"
+}
+
+# Arguments: <update in JSON>
+get_last_update_id() {
+	UPDATE_NUMBER=$(get_unread_updates_number "$@")
+	UPDATE_NUMBER=$(( UPDATES_NUMBER - 1 ))
+	get_specific_update "$@" "$UPDATE_NUMBER" | jq ".update_id"
+}
+
+# Arguments: <result in JSON>
 get_message() {
 	echo "$@" | jq ".message"
 }
