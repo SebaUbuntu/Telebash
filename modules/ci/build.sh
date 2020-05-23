@@ -98,7 +98,6 @@ Status: Waking up..." | jq .result.message_id)
 		fi
 	else
 		ci_edit_message "$@" "Failed at lunch"
-			break
 	fi
 else
 	tg_send_message "$(tg_get_chat_id "$@")" "CI building failed: missing arguments or wrong building path
