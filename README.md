@@ -12,5 +12,7 @@
 
 ### What can it do until now:
 
+- Report informations about the bot
 - Basic admin stuff (ban, unban, kick)
+- CI system
 
