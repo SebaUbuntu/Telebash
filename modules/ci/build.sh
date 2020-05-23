@@ -23,6 +23,8 @@ source base/send.sh
 import_variables
 import_more_variables
 
+THREADS=$(nproc --all)
+
 ci_parse_arguments() {
 	while [ "${#}" -gt 0 ]; do
 		case "${1}" in
@@ -85,10 +87,10 @@ Status: Waking up..." | jq .result.message_id)
 			mka installclean
 		fi
 		if [ "$CI_TYPE" = "Recovery" ]; then
-			mka recoveryimage -j$(nproc --all)
+			mka recoveryimage -j$THREADS
 			CI_BUILD_STATUS=$?
 		else
-			mka bacon -j$(nproc --all)
+			mka bacon -j$THREADS
 			CI_BUILD_STATUS=$?
 		fi
 		if [ $CI_LUNCH_STATUS = 0 ]; then
