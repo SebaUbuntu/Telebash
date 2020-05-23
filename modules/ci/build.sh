@@ -93,7 +93,7 @@ Status: Waking up..." | jq .result.message_id)
 			mka bacon -j$THREADS
 			CI_BUILD_STATUS=$?
 		fi
-		if [ $CI_LUNCH_STATUS = 0 ]; then
+		if [ $CI_BUILD_STATUS = 0 ]; then
 			ci_edit_message "$@" "Build completed"
 		else
 			ci_edit_message "$@" "Failed at building"
