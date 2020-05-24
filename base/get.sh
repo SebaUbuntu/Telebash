@@ -18,6 +18,7 @@
 # Arguments: <result in JSON>
 tg_get_message() {
 	echo "$@" | jq ".message"
+	echo "$@" | jq ".channel_post"
 }
 
 # Arguments: <message in JSON>
