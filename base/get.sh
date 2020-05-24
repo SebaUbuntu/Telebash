@@ -32,6 +32,11 @@ tg_get_message_id() {
 }
 
 # Arguments: <message in JSON>
+tg_get_message_date() {
+	tg_get_message "$@" | jq ".date"
+}
+
+# Arguments: <message in JSON>
 tg_get_sender_id() {
 	tg_get_message "$@" | jq ".from.id"
 }
@@ -39,6 +44,16 @@ tg_get_sender_id() {
 # Arguments: <message in JSON>
 tg_get_chat_id() {
 	tg_get_message "$@" | jq ".chat.id"
+}
+
+# Arguments: <message in JSON>
+tg_get_chat_title() {
+	tg_get_message "$@" | jq ".chat.title"
+}
+
+# Arguments: <message in JSON>
+tg_get_chat_username() {
+	tg_get_message "$@" | jq ".chat.username"
 }
 
 # Arguments: <message in JSON>
