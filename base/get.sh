@@ -82,6 +82,7 @@ tg_get_message_text() {
 	tg_get_message "$@" | jq ".text" | cut -d "\"" -f 2
 }
 
+# Arguments: <message in JSON>
 tg_get_command_arguments() {
 	if [ "$(tg_get_message_text "$@" | cut -d' ' -f2-)" = "$(tg_get_message_text "$@")" ]; then
 		echo ""
