@@ -17,7 +17,8 @@
 
 module_start() {
 	tg_send_message "$(tg_get_chat_id "$@")" "Hi!
-This is a multifunction bot, written in Bash by SebaUbuntu, because Python is boring
+Hi! I'm a multifunction bot, written in Bash by SebaUbuntu, because Python is boring
+I use modules to expand my features, you can see what commands you can use by typing .modules
 
 Version: $VERSION ($BRANCH)"
 }
@@ -38,4 +39,8 @@ Architecture: $(uname -m)
 
 module_runs() {
 	tg_send_message "$(tg_get_chat_id "$@")" "🏃"
+}
+
+module_modules() {
+	tg_send_message "$(tg_get_chat_id "$@")" "$(modules_list)"
 }
