@@ -27,20 +27,6 @@ import_modules() {
 	done
 }
 
-modules_list() {
-	MODULE_LIST_MESSAGE="Modules loaded:
-"
-	for module in $(ls modules/); do
-		MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE
-*${module}* \`\`\`"
-		for command in $(cat modules/$module/commands.txt); do
-			MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE $command"
-		done
-		MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE \`\`\`"
-	done
-	echo "$MODULE_LIST_MESSAGE"
-}
-
 execute_module() {
 	MESSAGE_TEXT="$(tg_get_message_text "$@")"
 	if [[ "$MESSAGE_TEXT" == /* ]] || [[ "$MESSAGE_TEXT" == .* ]]; then

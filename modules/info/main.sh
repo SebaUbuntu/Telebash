@@ -42,5 +42,15 @@ module_runs() {
 }
 
 module_modules() {
-	tg_send_message "$(tg_get_chat_id "$@")" "$(modules_list)"
+	MODULE_LIST_MESSAGE="Modules loaded:
+"
+	for module in $(ls modules/); do
+		MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE
+*${module}* \`\`\`"
+		for command in $(cat modules/$module/commands.txt); do
+			MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE $command"
+		done
+		MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE \`\`\`"
+	done
+	tg_send_message "$(tg_get_chat_id "$@")" "$MODULE_LIST_MESSAGE"
 }
