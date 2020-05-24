@@ -81,3 +81,11 @@ tg_get_chat_type() {
 tg_get_message_text() {
 	tg_get_message "$@" | jq ".text" | cut -d "\"" -f 2
 }
+
+tg_get_command_arguments() {
+	if [ "$(tg_get_message_text "$@" | cut -d' ' -f2-)" = "$(tg_get_message_text "$@")" ]; then
+		echo ""
+	else
+		tg_get_message_text "$@" | cut -d' ' -f2-
+	fi
+}
