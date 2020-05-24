@@ -34,6 +34,7 @@ import_more_variables
 import_modules
 
 if [ $(tg_get_updates | jq .ok) = "true" ]; then
+	echo "Bot up and running!"
 	while [ 0 != 1 ]; do
 		if [ "$LAST_UPDATE_ID" != "" ]; then
 			LAST_UPDATES=$(tg_get_updates -d offset="$LAST_UPDATE_ID")
@@ -53,5 +54,5 @@ if [ $(tg_get_updates | jq .ok) = "true" ]; then
 		fi
 	done
 else
-	echo "Error!"
+	echo "Error! Make sure you added the right HTTP API token in variables.sh"
 fi
