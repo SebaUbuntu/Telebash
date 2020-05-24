@@ -22,6 +22,7 @@ export SCRIPT_PWD=$(pwd)
 
 # Source variables and basic functions
 source variables.sh
+source base/updates.sh
 source base/get.sh
 source base/send.sh
 source base/admin.sh
