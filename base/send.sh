@@ -36,5 +36,13 @@ tg_send_file() {
 	else
 		curl -s -S -X POST "$TG_API_URL/sendDocument" -d chat_id="$1" -F name=document -F document=@"$2" -H "Content-Type:multipart/form-data" | jq .
 	fi
+}
 
+# Arguments: <chatid> <emoji> <message_id (for reply, optional)>
+tg_send_dice() {
+	if [ "$3" != "" ]; then
+		curl -s -S -X POST "$TG_API_URL/sendDice" -d chat_id="$1" -d emoji="$2" -d reply_to_message_id="$3" | jq .
+	else
+		curl -s -S -X POST "$TG_API_URL/sendDice" -d chat_id="$1" -d emoji="$2" | jq .
+	fi
 }
