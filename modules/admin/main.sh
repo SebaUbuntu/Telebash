@@ -16,7 +16,7 @@
 #
 
 module_ban() {
-	if [ "$(tg_user_can_restrict_members "$(tg_get_chat_member "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")")" = true ]; then
+	if [ "$(tg_member_can_restrict_members "$(tg_get_chat_member "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")")" = true ]; then
 		if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
 			tg_ban_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
 			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") banned successfully" "$(tg_get_message_id "$@")"
@@ -34,7 +34,7 @@ module_ban() {
 }
 
 module_unban() {
-	if [ "$(tg_user_can_restrict_members "$(tg_get_chat_member "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")")" = true ]; then
+	if [ "$(tg_member_can_restrict_members "$(tg_get_chat_member "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")")" = true ]; then
 		if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
 			tg_unban_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
 			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") unbanned successfully" "$(tg_get_message_id "$@")"
@@ -52,7 +52,7 @@ module_unban() {
 }
 
 module_kick() {
-	if [ "$(tg_user_can_restrict_members "$(tg_get_chat_member "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")")" = true ]; then
+	if [ "$(tg_member_can_restrict_members "$(tg_get_chat_member "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")")" = true ]; then
 		if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
 			tg_kick_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
 			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") kicked successfully" "$(tg_get_message_id "$@")"
@@ -70,7 +70,7 @@ module_kick() {
 }
 
 module_mute() {
-	if [ "$(tg_user_can_restrict_members "$(tg_get_chat_member "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")")" = true ]; then
+	if [ "$(tg_member_can_restrict_members "$(tg_get_chat_member "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")")" = true ]; then
 		if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
 			tg_mute_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
 			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") muted successfully" "$(tg_get_message_id "$@")"
@@ -88,7 +88,7 @@ module_mute() {
 }
 
 module_unmute() {
-	if [ "$(tg_user_can_restrict_members "$(tg_get_chat_member "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")")" = true ]; then
+	if [ "$(tg_member_can_restrict_members "$(tg_get_chat_member "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")")" = true ]; then
 		if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
 			tg_unmute_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
 			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") unmuted successfully" "$(tg_get_message_id "$@")"

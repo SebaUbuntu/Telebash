@@ -109,7 +109,3 @@ tg_get_member_user_id() {
 tg_get_member_user_language_code() {
 	echo "$@" | jq ".user.language_code" | cut -d "\"" -f 2
 }
-
-tg_get_member_status() {
-	echo "$@" | jq ".status" | cut -d "\"" -f 2
-}

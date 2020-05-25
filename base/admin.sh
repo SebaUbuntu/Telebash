@@ -16,10 +16,83 @@
 #
 
 # Arguments: <member_info>
-tg_user_can_restrict_members() {
-	if [ "$(echo "$@" | jq ".status" | cut -d "\"" -f 2)" = "creator" ]; then
+tg_get_member_is_bot() {
+	echo "$@" | jq ".user.is_bot"
+}
+
+# Arguments: <member_info>
+tg_get_member_status() {
+	echo "$@" | jq ".status" | cut -d "\"" -f 2
+}
+
+# Arguments: <member_info>
+tg_member_is_creator() {
+	if [ "$(tg_get_member_status "$@")" = "creator" ]; then
+		echo "true"
+	else
+		echo "false"
+	fi
+}
+
+# Arguments: <member_info>
+tg_member_can_be_edited() {
+	if [ "$(tg_member_is_creator "$@")" = "true" ]; then
+		echo "true"
+	else
+		echo "$@" | jq ".can_be_edited"
+	fi
+}
+
+# Arguments: <member_info>
+tg_member_can_change_info() {
+	if [ "$(tg_member_is_creator "$@")" = "true" ]; then
+		echo "true"
+	else
+		echo "$@" | jq ".can_change_info"
+	fi
+}
+
+# Arguments: <member_info>
+tg_member_can_delete_messages() {
+	if [ "$(tg_member_is_creator "$@")" = "true" ]; then
+		echo "true"
+	else
+		echo "$@" | jq ".can_delete_messages"
+	fi
+}
+
+# Arguments: <member_info>
+tg_member_can_invite_users() {
+	if [ "$(tg_member_is_creator "$@")" = "true" ]; then
+		echo "true"
+	else
+		echo "$@" | jq ".can_invite_users"
+	fi
+}
+
+# Arguments: <member_info>
+tg_member_can_restrict_members() {
+	if [ "$(tg_member_is_creator "$@")" = "true" ]; then
 		echo "true"
 	else
 		echo "$@" | jq ".can_restrict_members"
+	fi
+}
+
+# Arguments: <member_info>
+tg_member_can_pin_messages() {
+	if [ "$(tg_member_is_creator "$@")" = "true" ]; then
+		echo "true"
+	else
+		echo "$@" | jq ".can_pin_messages"
+	fi
+}
+
+# Arguments: <member_info>
+tg_member_can_promote_members() {
+	if [ "$(tg_member_is_creator "$@")" = "true" ]; then
+		echo "true"
+	else
+		echo "$@" | jq ".can_pin_messages"
 	fi
 }
