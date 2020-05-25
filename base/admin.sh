@@ -15,11 +15,11 @@
 # limitations under the License.
 #
 
-# Arguments: <chat_id> <user_id>
+# Arguments: <member_info>
 tg_user_can_restrict_members() {
-	if [ "$(tg_get_chat_member "$@" | jq ".status" | cut -d "\"" -f 2)" = "creator" ]; then
-		echo "True"
+	if [ "$(echo "$@" | jq ".status" | cut -d "\"" -f 2)" = "creator" ]; then
+		echo "true"
 	else
-		tg_get_chat_member "$@" | jq ".can_restrict_members"
+		echo "$@" | jq ".can_restrict_members"
 	fi
 }
