@@ -54,3 +54,15 @@ module_modules() {
 	done
 	tg_send_message "$(tg_get_chat_id "$@")" "$MODULE_LIST_MESSAGE" "$(tg_get_message_id "$@")"
 }
+
+module_me() {
+	CHAT_MEMBER_INFO=$(tg_get_chat_member "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")
+	ME_MESSAGE="Information about you:
+Full name: $(tg_get_member_full_name "$CHAT_MEMBER_INFO")
+Username: @$(tg_get_member_user_name "$CHAT_MEMBER_INFO")
+User ID: \`\`\` $(tg_get_member_user_id "$CHAT_MEMBER_INFO") \`\`\`
+Language: $(tg_get_member_user_language_code "$CHAT_MEMBER_INFO")
+Role: $(tg_get_member_status "$CHAT_MEMBER_INFO")
+"
+	tg_send_message "$(tg_get_chat_id "$@")" "$ME_MESSAGE" "$(tg_get_message_id "$@")"
+}
