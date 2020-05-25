@@ -15,11 +15,6 @@
 # limitations under the License.
 #
 
-# Arguments: <curl arguments>
-tg_get_updates() {
-	curl -s -X GET "$TG_API_URL/getUpdates" $@ | jq .
-}
-
 # Arguments: <update in JSON>
 tg_get_update_result() {
 	echo "$@" | jq ".result"
@@ -45,9 +40,4 @@ tg_get_last_update_id() {
 	UPDATE_NUMBER=$(tg_get_unread_updates_number "$@")
 	UPDATE_NUMBER=$(( UPDATES_NUMBER - 1 ))
 	tg_get_specific_update "$@" "$UPDATE_NUMBER" | jq ".update_id"
-}
-
-# Arguments: <curl arguments>
-tg_get_chat_member() {
-	curl -s -X GET "$TG_API_URL/getChatMember" -d chat_id="$1" -d user_id="$1" | jq .
 }

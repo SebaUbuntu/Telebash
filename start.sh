@@ -22,11 +22,13 @@ export SCRIPT_PWD=$(pwd)
 
 # Source variables and basic functions
 source variables.sh
-source base/updates.sh
-source base/get.sh
-source base/send.sh
+source base/telegram_admin.sh
+source base/telegram_get.sh
+source base/telegram_send.sh
 source base/admin.sh
+source base/get.sh
 source base/modules.sh
+source base/updates.sh
 
 import_variables
 import_more_variables
