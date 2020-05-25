@@ -34,11 +34,11 @@ Bash version: $BASH_VERSION
 Linux kernel version: $(uname -r)
 Architecture: $(uname -m)
 -----------------------------
-\`\`\`"
+\`\`\`" "$(tg_get_message_id "$@")"
 }
 
 module_runs() {
-	tg_send_message "$(tg_get_chat_id "$@")" "🏃"
+	tg_send_message "$(tg_get_chat_id "$@")" "🏃" "$(tg_get_message_id "$@")"
 }
 
 module_modules() {
@@ -52,5 +52,5 @@ module_modules() {
 		done
 		MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE \`\`\`"
 	done
-	tg_send_message "$(tg_get_chat_id "$@")" "$MODULE_LIST_MESSAGE"
+	tg_send_message "$(tg_get_chat_id "$@")" "$MODULE_LIST_MESSAGE" "$(tg_get_message_id "$@")"
 }
