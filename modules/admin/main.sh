@@ -70,11 +70,37 @@ module_kick() {
 }
 
 module_mute() {
-	#tg_send_message "$(get_chat_id "$@")" "Muted successfully"
-	tg_send_message "$(tg_get_chat_id "$@")" "WIP"
+	if [ "$(tg_user_can_restrict_members "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")" = True ]; then
+		if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
+			tg_mute_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
+			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") muted successfully" "$(tg_get_message_id "$@")"
+		elif [ "$(tg_get_command_arguments "$@")" != "" ]; then
+			if echo "$(tg_get_command_arguments "$1")" | grep -q "@"; then
+				tg_send_message "$(tg_get_chat_id "$@")" "Muting through username is not supported, reply to a message or provide a user id" "$(tg_get_message_id "$@")"
+			else
+				tg_mute_user "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$1")"
+				tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$1") muted successfully" "$(tg_get_message_id "$@")"
+			fi
+		else
+			tg_send_message "$(tg_get_chat_id "$@")" "Please reply to a message or write the username to mute that user" "$(tg_get_message_id "$@")"
+		fi
+	fi
 }
 
 module_unmute() {
-	#tg_send_message "$(get_chat_id "$@")" "Unmuted successfully"
-	tg_send_message "$(tg_get_chat_id "$@")" "WIP"
+	if [ "$(tg_user_can_restrict_members "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")" = True ]; then
+		if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
+			tg_unmute_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
+			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") unmuted successfully" "$(tg_get_message_id "$@")"
+		elif [ "$(tg_get_command_arguments "$@")" != "" ]; then
+			if echo "$(tg_get_command_arguments "$1")" | grep -q "@"; then
+				tg_send_message "$(tg_get_chat_id "$@")" "Unmuting through username is not supported, reply to a message or provide a user id" "$(tg_get_message_id "$@")"
+			else
+				tg_unmute_user "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$1")"
+				tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$1") unmuted successfully" "$(tg_get_message_id "$@")"
+			fi
+		else
+			tg_send_message "$(tg_get_chat_id "$@")" "Please reply to a message or write the username to unmute that user" "$(tg_get_message_id "$@")"
+		fi
+	fi
 }
