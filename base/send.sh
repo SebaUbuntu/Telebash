@@ -15,9 +15,13 @@
 # limitations under the License.
 #
 
-# Arguments: <chatid> <message_text>
+# Arguments: <chatid> <message_text> <message_id (for reply, optional)>
 tg_send_message() {
-	curl -s -S -X POST "$TG_API_URL/sendMessage" -d chat_id="$1" -d text="$2" -d parse_mode="Markdown" | jq .
+	if [ "$3" != "" ]; then
+		curl -s -S -X POST "$TG_API_URL/sendMessage" -d chat_id="$1" -d text="$2" -d reply_to_message_id="$3" -d parse_mode="Markdown" | jq .
+	else
+		curl -s -S -X POST "$TG_API_URL/sendMessage" -d chat_id="$1" -d text="$2" -d parse_mode="Markdown" | jq .
+	fi
 }
 
 # Arguments: <chatid> <message_id> <message_text>
@@ -25,7 +29,12 @@ tg_edit_message() {
 	curl -s -S -X POST "$TG_API_URL/editMessageText" -d chat_id="$1" -d message_id="$2" -d text="$3" parse_mode="Markdown" | jq .
 }
 
-# Arguments: <chatid> <document_path>
+# Arguments: <chatid> <document_path> <message_id (for reply, optional)>
 tg_send_file() {
-	curl -s -S -X POST "$TG_API_URL/sendDocument" -d chat_id="$1" -F name=document -F document=@"$2" -H "Content-Type:multipart/form-data" | jq .
+	if [ "$3" != "" ]; then
+		curl -s -S -X POST "$TG_API_URL/sendDocument" -d chat_id="$1" -d reply_to_message_id="$3" -F name=document -F document=@"$2" -H "Content-Type:multipart/form-data" | jq .
+	else
+		curl -s -S -X POST "$TG_API_URL/sendDocument" -d chat_id="$1" -F name=document -F document=@"$2" -H "Content-Type:multipart/form-data" | jq .
+	fi
+
 }
