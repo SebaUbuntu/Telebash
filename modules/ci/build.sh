@@ -55,7 +55,7 @@ ci_parse_arguments() {
 }
 
 ci_edit_message() {
-	tg_edit_message "$(tg_get_chat_id "$1")" "$CI_MESSAGE_ID" "CI building
+	tg_edit_message_text "$(tg_get_chat_id "$1")" "$CI_MESSAGE_ID" "CI building
 Device: $CI_DEVICE
 Type: $CI_TYPE
 $CI_TYPE project: $CI_PROJECT
