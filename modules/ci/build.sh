@@ -110,5 +110,5 @@ Usage: /ci <dir path> [arguments]
  -p <lunch prefix> (only used when build type is ROM, it's used with lunch command e.g. lunch \${prefix}_device-userdebug)
  -c (if you want to do a clean build)
  -ic (if you want to cleanup previous output with installclean)
-\`\`\`"
+\`\`\`" "$(tg_get_message_id "$@")"
 fi
