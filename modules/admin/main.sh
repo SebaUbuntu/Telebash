@@ -16,50 +16,56 @@
 #
 
 module_ban() {
-	if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
-		tg_ban_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
-		tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") banned successfully"
-	elif [ "$(tg_get_command_arguments "$@")" != "" ]; then
-		if echo "$(tg_get_command_arguments "$@")" | grep -q "@"; then
-			tg_send_message "$(tg_get_chat_id "$@")" "Banning through username is not supported, reply to a message or provide a user id"
+	if [ "$(tg_user_can_restrict_members "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")" = True ]; then
+		if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
+			tg_ban_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
+			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") banned successfully"
+		elif [ "$(tg_get_command_arguments "$@")" != "" ]; then
+			if echo "$(tg_get_command_arguments "$@")" | grep -q "@"; then
+				tg_send_message "$(tg_get_chat_id "$@")" "Banning through username is not supported, reply to a message or provide a user id"
+			else
+				tg_ban_user "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$@")"
+				tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$@") banned successfully"
+			fi
 		else
-			tg_ban_user "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$@")"
-			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$@") banned successfully"
+			tg_send_message "$(tg_get_chat_id "$@")" "Please reply to a message or write the user id to unban that user"
 		fi
-	else
-		tg_send_message "$(tg_get_chat_id "$@")" "Please reply to a message or write the user id to unban that user"
 	fi
 }
 
 module_unban() {
-	if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
-		tg_unban_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
-		tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") unbanned successfully"
-	elif [ "$(tg_get_command_arguments "$@")" != "" ]; then
-		if echo "$(tg_get_command_arguments "$@")" | grep -q "@"; then
-			tg_send_message "$(tg_get_chat_id "$@")" "Unbanning through username is not supported, reply to a message or provide a user id"
+	if [ "$(tg_user_can_restrict_members "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")" = True ]; then
+		if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
+			tg_unban_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
+			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") unbanned successfully"
+		elif [ "$(tg_get_command_arguments "$@")" != "" ]; then
+			if echo "$(tg_get_command_arguments "$@")" | grep -q "@"; then
+				tg_send_message "$(tg_get_chat_id "$@")" "Unbanning through username is not supported, reply to a message or provide a user id"
+			else
+				tg_unban_user "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$@")"
+				tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$@") kicked successfully"
+			fi
 		else
-			tg_unban_user "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$@")"
-			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$@") kicked successfully"
+			tg_send_message "$(tg_get_chat_id "$@")" "Please reply to a message or write the username to unban that user"
 		fi
-	else
-		tg_send_message "$(tg_get_chat_id "$@")" "Please reply to a message or write the username to unban that user"
 	fi
 }
 
 module_kick() {
-	if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
-		tg_kick_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
-		tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") kicked successfully"
-	elif [ "$(tg_get_command_arguments "$@")" != "" ]; then
-		if echo "$(tg_get_command_arguments "$@")" | grep -q "@"; then
-			tg_send_message "$(tg_get_chat_id "$@")" "Kicking through username is not supported, reply to a message or provide a user id"
+	if [ "$(tg_user_can_restrict_members "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")" = True ]; then
+		if [ "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")" != "null" ]; then
+			tg_kick_user "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")")"
+			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$(tg_get_reply_to_message "$@")") kicked successfully"
+		elif [ "$(tg_get_command_arguments "$@")" != "" ]; then
+			if echo "$(tg_get_command_arguments "$@")" | grep -q "@"; then
+				tg_send_message "$(tg_get_chat_id "$@")" "Kicking through username is not supported, reply to a message or provide a user id"
+			else
+				tg_kick_user "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$@")"
+				tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$@") kicked successfully"
+			fi
 		else
-			tg_kick_user "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$@")"
-			tg_send_message "$(tg_get_chat_id "$@")" "$(tg_get_command_arguments "$@") kicked successfully"
+			tg_send_message "$(tg_get_chat_id "$@")" "Please reply to a message or write the username to kick that user"
 		fi
-	else
-		tg_send_message "$(tg_get_chat_id "$@")" "Please reply to a message or write the username to kick that user"
 	fi
 }
 
