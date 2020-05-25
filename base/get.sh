@@ -17,8 +17,13 @@
 
 # Arguments: <result in JSON>
 tg_get_message() {
-	echo "$@" | jq ".message"
-	echo "$@" | jq ".channel_post"
+	if [ "$(echo "$@" | jq ".message")" != "null" ]; then
+		echo "$@" | jq ".message"
+	elif [ "$(echo "$@" | jq ".channel_post")" != "null" ]; then
+		echo "$@" | jq ".channel_post"
+	else
+		echo "null"
+	fi
 }
 
 # Arguments: <message in JSON>
