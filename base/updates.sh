@@ -46,3 +46,8 @@ tg_get_last_update_id() {
 	UPDATE_NUMBER=$(( UPDATES_NUMBER - 1 ))
 	tg_get_specific_update "$@" "$UPDATE_NUMBER" | jq ".update_id"
 }
+
+# Arguments: <curl arguments>
+tg_get_chat_member() {
+	curl -s -X GET "$TG_API_URL/getChatMember" -d chat_id="$1" -d user_id="$1" | jq .
+}
