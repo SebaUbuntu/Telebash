@@ -27,3 +27,17 @@ tg_kick_user() {
 	curl -s -X GET "$TG_API_URL/kickChatMember" -d chat_id="$1" -d user_id="$2" | jq .
 	curl -s -X GET "$TG_API_URL/unbanChatMember" -d chat_id="$1" -d user_id="$2" | jq .
 }
+
+# Arguments: <chat_id> <user_id>
+tg_get_chat_member() {
+	curl -s -X GET "$TG_API_URL/getChatMember" -d chat_id="$1" -d user_id="$2" | jq ".result"
+}
+
+# Arguments: <chat_id> <user_id>
+tg_user_can_restrict_members() {
+	if [ "$(tg_get_chat_member "$@" | jq ".status" | cut -d "\"" -f 2)" = "creator" ]; then
+		echo "True"
+	else
+		tg_get_chat_member "$@" | jq ".can_restrict_members"
+	fi
+}
