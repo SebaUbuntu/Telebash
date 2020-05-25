@@ -79,3 +79,31 @@ tg_get_command_arguments() {
 		tg_get_message_text "$@" | cut -d' ' -f2-
 	fi
 }
+
+tg_get_member_first_name() {
+	echo "$@" | jq ".user.first_name" | cut -d "\"" -f 2
+}
+
+tg_get_member_last_name() {
+	echo "$@" | jq ".user.last_name" | cut -d "\"" -f 2
+}
+
+tg_get_member_full_name() {
+	echo "$(tg_get_member_first_name "$@") $(tg_get_member_last_name "$@")"
+}
+
+tg_get_member_user_name() {
+	echo "$@" | jq ".user.username" | cut -d "\"" -f 2
+}
+
+tg_get_member_user_id() {
+	echo "$@" | jq ".user.id"
+}
+
+tg_get_member_user_language_code() {
+	echo "$@" | jq ".user.language_code" | cut -d "\"" -f 2
+}
+
+tg_get_member_status() {
+	echo "$@" | jq ".status" | cut -d "\"" -f 2
+}
