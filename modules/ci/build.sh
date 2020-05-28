@@ -83,10 +83,13 @@ Status: Waking up..." | jq .result.message_id)
 	fi
 	if [ $CI_LUNCH_STATUS = 0 ]; then
 		if [ "$CI_CLEAN" = "clean" ]; then
+			ci_edit_message "$@" "Cleaning..."
 			mka clean
 		elif [ "$CI_CLEAN" = "installclean" ]; then
+			ci_edit_message "$@" "Cleaning..."
 			mka installclean
 		fi
+			ci_edit_message "$@" "Building..."
 		if [ "$CI_TYPE" = "Recovery" ]; then
 			mka recoveryimage -j$THREADS
 			CI_BUILD_STATUS=$?
