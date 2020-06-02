@@ -42,22 +42,22 @@ module_runs() {
 }
 
 module_modules() {
-	MODULE_LIST_MESSAGE="Modules loaded:
+	local MODULE_LIST_MESSAGE="Modules loaded:
 "
 	for module in $(ls modules/); do
-		MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE
+		local MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE
 *${module}* \`\`\`"
 		for command in $(cat modules/$module/commands.txt); do
-			MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE $command"
+			local MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE $command"
 		done
-		MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE \`\`\`"
+		local MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE \`\`\`"
 	done
 	tg_send_message "$(tg_get_chat_id "$@")" "$MODULE_LIST_MESSAGE" "$(tg_get_message_id "$@")"
 }
 
 module_me() {
-	CHAT_MEMBER_INFO=$(tg_get_chat_member "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")
-	ME_MESSAGE="Information about you:
+	local CHAT_MEMBER_INFO=$(tg_get_chat_member "$(tg_get_chat_id "$@")" "$(tg_get_sender_id "$@")")
+	local ME_MESSAGE="Information about you:
 Full name: $(tg_get_member_full_name "$CHAT_MEMBER_INFO")
 Username: @$(tg_get_member_user_name "$CHAT_MEMBER_INFO")
 User ID: \`\`\` $(tg_get_member_user_id "$CHAT_MEMBER_INFO") \`\`\`
