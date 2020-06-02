@@ -32,8 +32,16 @@ execute_module() {
 	if [[ "$MESSAGE_TEXT" == /* ]] || [[ "$MESSAGE_TEXT" == .* ]]; then
 		MESSAGE_TEXT=${MESSAGE_TEXT#?}
 		MESSAGE_TEXT_COMMAND=$(echo "$MESSAGE_TEXT" | head -n1 | awk '{print $1;}')
-		if echo "$AVAILABLE_COMMANDS" | grep -q "$MESSAGE_TEXT_COMMAND"; then
-			module_$MESSAGE_TEXT_COMMAND "$@"
+		if echo "$MESSAGE_TEXT_COMMAND" | grep -q "@"; then
+			MESSAGE_TEXT_BOT=$(echo "$MESSAGE_TEXT_COMMAND" | cut -d'@' -f2)
+			MESSAGE_TEXT_COMMAND=$(echo "$MESSAGE_TEXT_COMMAND" | cut -d'@' -f1)
+		else
+			MESSAGE_TEXT_BOT=$(tg_get_bot_username)
+		fi
+		if [ "$MESSAGE_TEXT_BOT" = "$(tg_get_bot_username)" ]; then
+			if echo "$AVAILABLE_COMMANDS" | grep -q "$MESSAGE_TEXT_COMMAND"; then
+				module_$MESSAGE_TEXT_COMMAND "$@"
+			fi
 		fi
 	fi
 }
