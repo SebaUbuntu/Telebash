@@ -27,8 +27,12 @@ tg_unban_user() {
 
 # Arguments: <chat_id> <user_id>
 tg_kick_user() {
-	curl -s -X GET "$TG_API_URL/kickChatMember" -d chat_id="$1" -d user_id="$2" | jq .
-	curl -s -X GET "$TG_API_URL/unbanChatMember" -d chat_id="$1" -d user_id="$2" | jq .
+	local RESULT=$(curl -s -X GET "$TG_API_URL/kickChatMember" -d chat_id="$1" -d user_id="$2" | jq .)
+	if [ "$(echo "$RESULT" | jq .ok)" = "true" ]; then
+		curl -s -X GET "$TG_API_URL/unbanChatMember" -d chat_id="$1" -d user_id="$2" | jq .
+	else
+		echo $RESULT | jq .
+	fi
 }
 
 # Arguments: <"all" or "none">
