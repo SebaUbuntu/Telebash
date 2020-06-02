@@ -25,7 +25,7 @@ tg_get_updates() {
 	curl -s -X GET "$TG_API_URL/getUpdates" $@ | jq .
 }
 
-# Arguments: <curl arguments>
+# Arguments: <chat_id> <user_id>
 tg_get_chat_member() {
 	curl -s -X GET "$TG_API_URL/getChatMember" -d chat_id="$1" -d user_id="$2" | jq ".result"
 }
