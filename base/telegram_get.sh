@@ -15,6 +15,11 @@
 # limitations under the License.
 #
 
+# Arguments: none
+tg_get_me() {
+	curl -s -X GET "$TG_API_URL/getMe" | jq .
+}
+
 # Arguments: <curl arguments>
 tg_get_updates() {
 	curl -s -X GET "$TG_API_URL/getUpdates" $@ | jq .

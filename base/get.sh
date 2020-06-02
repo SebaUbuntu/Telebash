@@ -109,3 +109,18 @@ tg_get_member_user_id() {
 tg_get_member_user_language_code() {
 	echo "$@" | jq ".user.language_code" | cut -d "\"" -f 2
 }
+
+# Arguments: none
+tg_get_bot_user_id() {
+	tg_get_me | jq ".result.id"
+}
+
+# Arguments: none
+tg_get_bot_name() {
+	tg_get_me | jq ".result.first_name" | cut -d "\"" -f 2
+}
+
+# Arguments: none
+tg_get_bot_username() {
+	tg_get_me | jq ".result.username" | cut -d "\"" -f 2
+}
