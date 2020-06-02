@@ -15,84 +15,84 @@
 # limitations under the License.
 #
 
-# Arguments: <member_info>
+# Arguments: <chat_id> <user_id>
 tg_get_member_is_bot() {
-	echo "$@" | jq ".user.is_bot"
+	tg_get_chat_member "$1" "$2" | jq ".user.is_bot"
 }
 
-# Arguments: <member_info>
+# Arguments: <chat_id> <user_id>
 tg_get_member_status() {
-	echo "$@" | jq ".status" | cut -d "\"" -f 2
+	tg_get_chat_member "$1" "$2" | jq ".status" | cut -d "\"" -f 2
 }
 
-# Arguments: <member_info>
+# Arguments: <chat_id> <user_id>
 tg_member_is_creator() {
-	if [ "$(tg_get_member_status "$@")" = "creator" ]; then
+	if [ "$(tg_get_member_status "$1" "$2")" = "creator" ]; then
 		echo "true"
 	else
 		echo "false"
 	fi
 }
 
-# Arguments: <member_info>
+# Arguments: <chat_id> <user_id>
 tg_member_can_be_edited() {
-	if [ "$(tg_member_is_creator "$@")" = "true" ]; then
+	if [ "$(tg_member_is_creator "$1" "$2")" = "true" ]; then
 		echo "true"
 	else
-		echo "$@" | jq ".can_be_edited"
+		tg_get_chat_member "$1" "$2" | jq ".can_be_edited"
 	fi
 }
 
-# Arguments: <member_info>
+# Arguments: <chat_id> <user_id>
 tg_member_can_change_info() {
-	if [ "$(tg_member_is_creator "$@")" = "true" ]; then
+	if [ "$(tg_member_is_creator "$1" "$2")" = "true" ]; then
 		echo "true"
 	else
-		echo "$@" | jq ".can_change_info"
+		tg_get_chat_member "$1" "$2" | jq ".can_change_info"
 	fi
 }
 
-# Arguments: <member_info>
+# Arguments: <chat_id> <user_id>
 tg_member_can_delete_messages() {
-	if [ "$(tg_member_is_creator "$@")" = "true" ]; then
+	if [ "$(tg_member_is_creator "$1" "$2")" = "true" ]; then
 		echo "true"
 	else
-		echo "$@" | jq ".can_delete_messages"
+		tg_get_chat_member "$1" "$2" | jq ".can_delete_messages"
 	fi
 }
 
-# Arguments: <member_info>
+# Arguments: <chat_id> <user_id>
 tg_member_can_invite_users() {
-	if [ "$(tg_member_is_creator "$@")" = "true" ]; then
+	if [ "$(tg_member_is_creator "$1" "$2")" = "true" ]; then
 		echo "true"
 	else
-		echo "$@" | jq ".can_invite_users"
+		tg_get_chat_member "$1" "$2" | jq ".can_invite_users"
 	fi
 }
 
-# Arguments: <member_info>
+# Arguments: <chat_id> <user_id>
 tg_member_can_restrict_members() {
-	if [ "$(tg_member_is_creator "$@")" = "true" ]; then
+	if [ "$(tg_member_is_creator "$1" "$2")" = "true" ]; then
 		echo "true"
 	else
-		echo "$@" | jq ".can_restrict_members"
+		tg_get_chat_member "$1" "$2" | jq ".can_restrict_members"
 	fi
 }
 
-# Arguments: <member_info>
+# Arguments: <chat_id> <user_id>
 tg_member_can_pin_messages() {
-	if [ "$(tg_member_is_creator "$@")" = "true" ]; then
+	if [ "$(tg_member_is_creator "$1" "$2")" = "true" ]; then
 		echo "true"
 	else
-		echo "$@" | jq ".can_pin_messages"
+		tg_get_chat_member "$1" "$2" | jq ".can_pin_messages"
 	fi
 }
 
-# Arguments: <member_info>
+# Arguments: <chat_id> <user_id>
 tg_member_can_promote_members() {
-	if [ "$(tg_member_is_creator "$@")" = "true" ]; then
+	if [ "$(tg_member_is_creator "$1" "$2")" = "true" ]; then
 		echo "true"
 	else
-		echo "$@" | jq ".can_pin_messages"
+		tg_get_chat_member "$1" "$2" | jq ".can_pin_messages"
 	fi
 }
