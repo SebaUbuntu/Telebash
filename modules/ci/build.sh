@@ -56,7 +56,7 @@ ci_parse_arguments() {
 }
 
 ci_edit_message() {
-	tg_edit_message_text "$(tg_get_chat_id "$1")" "$CI_MESSAGE_ID" "CI building
+	tg_edit_message_text "$CI_CHANNEL_ID" "$CI_MESSAGE_ID" "CI building
 Device: $CI_DEVICE
 Type: $CI_TYPE
 $CI_TYPE project: $CI_PROJECT
@@ -65,45 +65,49 @@ Status: $2"
 
 ci_parse_arguments $(tg_get_command_arguments "$@")
 if [ "$CI_DEVICE" != "" ] && [ "$CI_PROJECT" != "" ] && [ "$CI_TYPE" != "" ] && $([ "$CI_TYPE" = "Recovery" ] || $([ "$CI_TYPE" = "ROM" ] && [ "$CI_LUNCH_PREFIX" != "" ])) && [ -d "$CI_MAIN_DIR/$CI_PROJECT" ]; then
-	CI_MESSAGE_ID=$(tg_send_message "$(tg_get_chat_id "$@")" "CI building
+	CI_MESSAGE_ID=$(tg_send_message "$CI_CHANNEL_ID" "CI building
 Device: $CI_DEVICE
 Type: $CI_TYPE
 $CI_TYPE project: $CI_PROJECT
 Status: Waking up..." | jq .result.message_id)
-	cd "$CI_MAIN_DIR/$CI_PROJECT"
-	ci_edit_message "$@" "Setting up environment..."
-	. build/envsetup.sh
-	ci_edit_message "$@" "Lunching..."
-	if [ "$CI_TYPE" = "Recovery" ]; then
-		lunch omni_${CI_DEVICE}-eng
-		CI_LUNCH_STATUS=$?
-	else
-		lunch ${CI_LUNCH_PREFIX}_${CI_DEVICE}-userdebug
-		CI_LUNCH_STATUS=$?
-	fi
-	if [ $CI_LUNCH_STATUS = 0 ]; then
-		if [ "$CI_CLEAN" = "clean" ]; then
-			ci_edit_message "$@" "Cleaning..."
-			mka clean
-		elif [ "$CI_CLEAN" = "installclean" ]; then
-			ci_edit_message "$@" "Cleaning..."
-			mka installclean
-		fi
-			ci_edit_message "$@" "Building..."
+	if [ "$CI_MESSAGE_ID" != "" ]; then
+		cd "$CI_MAIN_DIR/$CI_PROJECT"
+		ci_edit_message "$@" "Setting up environment..."
+		. build/envsetup.sh
+		ci_edit_message "$@" "Lunching..."
 		if [ "$CI_TYPE" = "Recovery" ]; then
-			mka recoveryimage -j$THREADS
-			CI_BUILD_STATUS=$?
+			lunch omni_${CI_DEVICE}-eng
+			CI_LUNCH_STATUS=$?
 		else
-			mka bacon -j$THREADS
-			CI_BUILD_STATUS=$?
+			lunch ${CI_LUNCH_PREFIX}_${CI_DEVICE}-userdebug
+			CI_LUNCH_STATUS=$?
 		fi
-		if [ $CI_BUILD_STATUS = 0 ]; then
-			ci_edit_message "$@" "Build completed"
+		if [ $CI_LUNCH_STATUS = 0 ]; then
+			if [ "$CI_CLEAN" = "clean" ]; then
+				ci_edit_message "$@" "Cleaning..."
+				mka clean
+			elif [ "$CI_CLEAN" = "installclean" ]; then
+				ci_edit_message "$@" "Cleaning..."
+				mka installclean
+			fi
+				ci_edit_message "$@" "Building..."
+			if [ "$CI_TYPE" = "Recovery" ]; then
+				mka recoveryimage -j$THREADS
+				CI_BUILD_STATUS=$?
+			else
+				mka bacon -j$THREADS
+				CI_BUILD_STATUS=$?
+			fi
+			if [ $CI_BUILD_STATUS = 0 ]; then
+				ci_edit_message "$@" "Build completed"
+			else
+				ci_edit_message "$@" "Failed at building"
+			fi
 		else
-			ci_edit_message "$@" "Failed at building"
+			ci_edit_message "$@" "Failed at lunch"
 		fi
 	else
-		ci_edit_message "$@" "Failed at lunch"
+		tg_send_message "$(tg_get_chat_id "$@")" "Error: specified CI channel or user ID is invalid" "$(tg_get_message_id "$@")"
 	fi
 else
 	tg_send_message "$(tg_get_chat_id "$@")" "CI building failed: missing arguments or wrong building path

@@ -19,6 +19,7 @@ import_variables() {
 	export TG_BOT_TOKEN=
 	export CI_APPROVED_USER_IDS= # Add user ID and separate them with a space
 	export CI_MAIN_DIR= # This folder needs to contain every ROMs and recoveries sources with proper folder naming (eg. the folder contains "LineageOS-17.1" folder, so when you launch the command it will cd into Lineage-17.1 folder and starting building). Add a slash at the end of the path (eg. /home/user/)
+	export CI_CHANNEL_ID= # Add channel ID/username or group ID to use for updates posting
 }
 
 import_more_variables() {
