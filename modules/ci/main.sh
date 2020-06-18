@@ -16,7 +16,7 @@
 #
 
 module_ci() {
-	if echo "$(tg_get_sender_id "$@")" | grep -q "$CI_AUTHORIZED_USER_IDS"; then
+	if echo "$(tg_get_sender_id "$@")" | grep -q "$CI_APPROVED_USER_IDS"; then
 		modules/ci/build.sh "$@" &
 	else
 		tg_send_message "$(tg_get_chat_id "$@")" "Error: you are not authorized to use CI function of this bot, ask to who host this bot to add you to the authorized people list" "$(tg_get_message_id "$@")"
