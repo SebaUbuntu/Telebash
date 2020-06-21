@@ -24,27 +24,10 @@ source base/telegram_send.sh
 import_variables
 import_more_variables
 
-THREADS=$(nproc --all)
-
 ci_parse_arguments() {
 	while [ "${#}" -gt 0 ]; do
 		case "${1}" in
-			-t | --type )
-				CI_TYPE="${2}"
-				shift
-				;;
-			-c | --clean )
-				CI_CLEAN=clean
-				;;
-			-ic | --installclean )
-				CI_CLEAN=installclean
-				;;
-			-d | --device )
-				CI_DEVICE="${2}"
-				shift
-				;;
-			-p | --prefix )
-				CI_LUNCH_PREFIX="${2}"
+			-* )
 				shift
 				;;
 			* )
@@ -55,68 +38,19 @@ ci_parse_arguments() {
 	done
 }
 
-ci_edit_message() {
-	tg_edit_message_text "$CI_CHANNEL_ID" "$CI_MESSAGE_ID" "CI building
-Device: $CI_DEVICE
-Type: $CI_TYPE
-$CI_TYPE project: $CI_PROJECT
-Status: $2"
-}
-
 ci_parse_arguments $(tg_get_command_arguments "$@")
-if [ "$CI_DEVICE" != "" ] && [ "$CI_PROJECT" != "" ] && [ "$CI_TYPE" != "" ] && $([ "$CI_TYPE" = "Recovery" ] || $([ "$CI_TYPE" = "ROM" ] && [ "$CI_LUNCH_PREFIX" != "" ])) && [ -d "$CI_MAIN_DIR/$CI_PROJECT" ]; then
-	CI_MESSAGE_ID=$(tg_send_message "$CI_CHANNEL_ID" "CI building
-Device: $CI_DEVICE
-Type: $CI_TYPE
-$CI_TYPE project: $CI_PROJECT
-Status: Waking up..." | jq .result.message_id)
-	if [ "$CI_MESSAGE_ID" != "" ]; then
-		cd "$CI_MAIN_DIR/$CI_PROJECT"
-		ci_edit_message "$@" "Setting up environment..."
-		. build/envsetup.sh
-		ci_edit_message "$@" "Lunching..."
-		if [ "$CI_TYPE" = "Recovery" ]; then
-			lunch omni_${CI_DEVICE}-eng
-			CI_LUNCH_STATUS=$?
-		else
-			lunch ${CI_LUNCH_PREFIX}_${CI_DEVICE}-userdebug
-			CI_LUNCH_STATUS=$?
-		fi
-		if [ $CI_LUNCH_STATUS = 0 ]; then
-			if [ "$CI_CLEAN" = "clean" ]; then
-				ci_edit_message "$@" "Cleaning..."
-				mka clean
-			elif [ "$CI_CLEAN" = "installclean" ]; then
-				ci_edit_message "$@" "Cleaning..."
-				mka installclean
-			fi
-				ci_edit_message "$@" "Building..."
-			if [ "$CI_TYPE" = "Recovery" ]; then
-				mka recoveryimage -j$THREADS
-				CI_BUILD_STATUS=$?
-			else
-				mka bacon -j$THREADS
-				CI_BUILD_STATUS=$?
-			fi
-			if [ $CI_BUILD_STATUS = 0 ]; then
-				ci_edit_message "$@" "Build completed"
-			else
-				ci_edit_message "$@" "Failed at building"
-			fi
-		else
-			ci_edit_message "$@" "Failed at lunch"
-		fi
+if [ "$CI_PROJECT" != "" ]; then
+	if [ -f "modules/ci/$CI_PROJECT.sh" ]; then
+		modules/ci/$CI_PROJECT.sh "$@"
 	else
-		tg_send_message "$(tg_get_chat_id "$@")" "Error: specified CI channel or user ID is invalid" "$(tg_get_message_id "$@")"
+		tg_send_message "$(tg_get_chat_id "$@")" "CI building failed: Project not found
+
+Usage: \`/ci <project> [arguments]\`
+  Arguments are project-specific, to know what arguments you can use with a project, use \`-h\` or \`--help\`." "$(tg_get_message_id "$@")"
 	fi
 else
-	tg_send_message "$(tg_get_chat_id "$@")" "CI building failed: missing arguments or wrong building path
-\`\`\`
-Usage: /ci <dir path> [arguments]
- -d <codename> 
- -t <\"ROM\" or \"recovery\">
- -p <lunch prefix> (only used when build type is ROM, it's used with lunch command e.g. lunch \${prefix}_device-userdebug)
- -c (if you want to do a clean build)
- -ic (if you want to cleanup previous output with installclean)
-\`\`\`" "$(tg_get_message_id "$@")"
+	tg_send_message "$(tg_get_chat_id "$@")" "CI building failed: No projects has been defined
+
+Usage: \`/ci <project> [arguments]\`
+  Arguments are project-specific, to know what arguments you can use with a project, use \`-h\` or \`--help\`." "$(tg_get_message_id "$@")"
 fi
