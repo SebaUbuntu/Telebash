@@ -94,7 +94,18 @@ if [ "$CI_DEVICE" != "" ] && [ -d "$CI_MAIN_DIR/LineageOS-17.1" ]; then
 			mka bacon -j$(nproc --all)
 			CI_BUILD_STATUS=$?
 			if [ $CI_BUILD_STATUS = 0 ]; then
-				ci_message "Build completed"
+				if [ "$CI_ENABLE_GDRIVE_UPLOAD" = "true" ] && [ "$(command -v gupload > /dev/null 2>&1 && echo 0)" = "0" ]; then
+					ci_message "Build completed, uploading..."
+					CI_UPLOAD_LINK=$(gupload out/target/product/$CI_DEVICE/lineage-*.zip | grep "https://drive.google.com/open?id=" | sed "s/[][]//g" | tr -d '[:space:]')
+					if [ "$CI_UPLOAD_LINK" != "" ]; then
+						ci_message "Build completed
+Link: $CI_UPLOAD_LINK"
+					else
+						ci_message "Build completed, upload failed"
+					fi
+				else
+					ci_message "Build completed"
+				fi
 			else
 				ci_message "Failed at building"
 			fi
