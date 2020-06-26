@@ -6,9 +6,11 @@
 
 ### How to use it:
 
-- Put a bot token in variables.sh
+- Launch `install.sh` to install all the dependencies
 
-- Edit additional variables in variables.sh
+- Put a bot token in `variables.sh`
+
+- Edit additional variables in `variables.sh`
 
 - Launch the bot by typing 
 
