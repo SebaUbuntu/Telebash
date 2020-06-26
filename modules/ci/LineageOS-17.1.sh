@@ -47,7 +47,7 @@ ci_parse_arguments() {
 
 ci_help() {
 	tg_send_message "$(tg_get_chat_id "$1")" "$2
-Usage: \`/ci <device codename> [arguments]\`
+Usage: \`/ci LineageOS-17.1 [arguments]\`
  \`-d <codename>\` (specify device codename)
  \`-c\` (if you want to do a clean build) (optional)
  \`-ic\` (if you want to cleanup previous output with installclean) (optional)" "$(tg_get_message_id "$@")"

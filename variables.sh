@@ -18,7 +18,7 @@
 import_variables() {
 	export TG_BOT_TOKEN=
 	export CI_APPROVED_USER_IDS= # Add user ID and separate them with a space
-	export CI_MAIN_DIR= # This folder needs to contain every ROMs and recoveries sources with proper folder naming (eg. the folder contains "LineageOS-17.1" folder, so when you launch the command it will cd into Lineage-17.1 folder and starting building). Add a slash at the end of the path (eg. /home/user/)
+	export CI_MAIN_DIR= # This folder needs to contain every ROMs and recoveries sources with proper folder naming (eg. the folder contains "LineageOS-17.1" folder, so when you launch the command it will cd into Lineage-17.1 folder and starting building). DON'T add a slash at the end of the path (eg. /home/user)
 	export CI_CHANNEL_ID= # Add channel ID/username or group ID to use for updates posting
 	export CI_ENABLE_GDRIVE_UPLOAD=false # (please read this entire comment before enabling it) Upload artifacts to a Google Drive if the CI script supports it by setting it to true. Note: You must configure it before you enable this flag; read https://github.com/labbots/google-drive-upload#generating-oauth-credentials and https://github.com/labbots/google-drive-upload#first-run to configure it
 }
