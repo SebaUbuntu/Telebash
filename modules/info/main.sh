@@ -16,8 +16,7 @@
 #
 
 module_start() {
-	tg_send_message "$(tg_get_chat_id "$@")" "Hi!
-Hi! I'm a multifunction bot, written in Bash by SebaUbuntu, because Python is boring
+	tg_send_message "$(tg_get_chat_id "$@")" "Hi! I'm a multifunction bot, written in Bash by SebaUbuntu, because Python is boring
 I use modules to expand my features, you can see what commands you can use by typing .modules
 
 Version: $VERSION ($BRANCH)"
@@ -34,7 +33,7 @@ Bash version: $BASH_VERSION
 Linux kernel version: $(uname -r)
 Architecture: $(uname -m)
 -----------------------------
-\`\`\`" "$(tg_get_message_id "$@")"
+\`\`\`" "$(tg_get_message_id "$@")" --markdown
 }
 
 module_runs() {
@@ -52,7 +51,7 @@ module_modules() {
 		done
 		local MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE \`\`\`"
 	done
-	tg_send_message "$(tg_get_chat_id "$@")" "$MODULE_LIST_MESSAGE" "$(tg_get_message_id "$@")"
+	tg_send_message "$(tg_get_chat_id "$@")" "$MODULE_LIST_MESSAGE" "$(tg_get_message_id "$@")" --markdown
 }
 
 module_me() {
@@ -64,5 +63,5 @@ User ID: \`\`\` $(tg_get_member_user_id "$CHAT_MEMBER_INFO") \`\`\`
 Language: $(tg_get_member_user_language_code "$CHAT_MEMBER_INFO")
 Role: $(tg_get_member_status "$CHAT_MEMBER_INFO")
 "
-	tg_send_message "$(tg_get_chat_id "$@")" "$ME_MESSAGE" "$(tg_get_message_id "$@")"
+	tg_send_message "$(tg_get_chat_id "$@")" "$ME_MESSAGE" "$(tg_get_message_id "$@")" --markdown
 }

@@ -19,7 +19,7 @@ module_cowsay() {
 	if [ "$(tg_get_command_arguments "$@")" != "" ]; then
 		tg_send_message "$(tg_get_chat_id "$@")" "\`\`\`
 $(cowsay "$(tg_get_command_arguments "$@")")
-\`\`\`" "$(tg_get_message_id "$@")"
+\`\`\`" "$(tg_get_message_id "$@")" --markdown
 	else
 		tg_send_message "$(tg_get_chat_id "$@")" "Error: please write something after the command" "$(tg_get_message_id "$@")"
 	fi

@@ -18,5 +18,5 @@
 module_neofetch() {
 	tg_send_message "$(tg_get_chat_id "$@")" "\`\`\`
 $(neofetch --stdout)
-\`\`\`" "$(tg_get_message_id "$@")"
+\`\`\`" "$(tg_get_message_id "$@")" --markdown
 }

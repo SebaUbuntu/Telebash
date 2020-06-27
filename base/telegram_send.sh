@@ -15,12 +15,24 @@
 # limitations under the License.
 #
 
+get_arguments() {
+	while [ "${#}" -gt 0 ]; do
+		case "${1}" in
+			--markdown )
+				echo true
+				;;
+		esac
+		shift
+	done
+}
+
 # Arguments: <chatid> <message_text> <message_id (for reply, optional)>
 tg_send_message() {
+	local USE_MARKDOWN=$(get_arguments "$@")
 	if [ "$3" != "" ]; then
-		curl -s -S -X POST "$TG_API_URL/sendMessage" -d chat_id="$1" -d text="$2" -d reply_to_message_id="$3" -d disable_web_page_preview="true" -d parse_mode="Markdown" | jq .
+		curl -s -S -X POST "$TG_API_URL/sendMessage" -d chat_id="$1" -d text="$2" -d reply_to_message_id="$3" -d disable_web_page_preview="true" $(if [ "$USE_MARKDOWN" = true ]; then printf -- '-d parse_mode=Markdown'; fi) | jq .
 	else
-		curl -s -S -X POST "$TG_API_URL/sendMessage" -d chat_id="$1" -d text="$2" -d disable_web_page_preview="true" -d parse_mode="Markdown" | jq .
+		curl -s -S -X POST "$TG_API_URL/sendMessage" -d chat_id="$1" -d text="$2" -d disable_web_page_preview="true" $(if [ "$USE_MARKDOWN" = true ]; then printf '-d parse_mode="Markdown"'; fi) | jq .
 	fi
 }
 
@@ -71,12 +83,14 @@ tg_send_animation() {
 
 # Arguments: <chatid> <message_id> <message_text>
 tg_edit_message_text() {
-	curl -s -S -X POST "$TG_API_URL/editMessageText" -d chat_id="$1" -d message_id="$2" -d text="$3" -d disable_web_page_preview="true" -d parse_mode="Markdown" | jq .
+	local USE_MARKDOWN=$(get_arguments "$@")
+	curl -s -S -X POST "$TG_API_URL/editMessageText" -d chat_id="$1" -d message_id="$2" -d text="$3" -d disable_web_page_preview="true" $(if [ "$USE_MARKDOWN" = true ]; then printf -- '-d parse_mode=Markdown'; fi) | jq .
 }
 
 # Arguments: <chatid> <message_id> <message_text>
 tg_edit_message_caption() {
-	curl -s -S -X POST "$TG_API_URL/editMessageMedia" -d chat_id="$1" -d message_id="$2" -d text="$3" parse_mode="Markdown" | jq .
+	local USE_MARKDOWN=$(get_arguments "$@")
+	curl -s -S -X POST "$TG_API_URL/editMessageMedia" -d chat_id="$1" -d message_id="$2" -d text="$3" $(if [ "$USE_MARKDOWN" = true ]; then printf -- '-d parse_mode=Markdown'; fi) | jq .
 }
 
 # Arguments: <chatid> <emoji> <message_id (for reply, optional)>
