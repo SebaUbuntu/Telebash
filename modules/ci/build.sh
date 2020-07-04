@@ -46,11 +46,11 @@ if [ "$CI_PROJECT" != "" ]; then
 		tg_send_message "$(tg_get_chat_id "$@")" "CI building failed: Project not found
 
 Usage: \`/ci <project> [arguments]\`
-  Arguments are project-specific, to know what arguments you can use with a project, use \`-h\` or \`--help\`." "$(tg_get_message_id "$@")"
+Arguments are project-specific, to know what arguments you can use with a project, use \`-h\` or \`--help\`." "$(tg_get_message_id "$@")" --markdown
 	fi
 else
 	tg_send_message "$(tg_get_chat_id "$@")" "CI building failed: No projects has been defined
 
 Usage: \`/ci <project> [arguments]\`
-  Arguments are project-specific, to know what arguments you can use with a project, use \`-h\` or \`--help\`." "$(tg_get_message_id "$@")"
+Arguments are project-specific, to know what arguments you can use with a project, use \`-h\` or \`--help\`." "$(tg_get_message_id "$@")" --markdown
 fi
