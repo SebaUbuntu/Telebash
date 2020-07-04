@@ -32,7 +32,7 @@ tg_send_message() {
 	if [ "$3" != "" ]; then
 		curl -s -S -X POST "$TG_API_URL/sendMessage" -d chat_id="$1" -d text="$2" -d reply_to_message_id="$3" -d disable_web_page_preview="true" $(if [ "$USE_MARKDOWN" = true ]; then printf -- '-d parse_mode=Markdown'; fi) | jq .
 	else
-		curl -s -S -X POST "$TG_API_URL/sendMessage" -d chat_id="$1" -d text="$2" -d disable_web_page_preview="true" $(if [ "$USE_MARKDOWN" = true ]; then printf '-d parse_mode="Markdown"'; fi) | jq .
+		curl -s -S -X POST "$TG_API_URL/sendMessage" -d chat_id="$1" -d text="$2" -d disable_web_page_preview="true" $(if [ "$USE_MARKDOWN" = true ]; then printf -- '-d parse_mode=Markdown'; fi) | jq .
 	fi
 }
 
