@@ -15,106 +15,19 @@
 # limitations under the License.
 #
 
-# Source variables and basic functions
-source variables.sh
-source base/telegram_get.sh
-source base/get.sh
-source base/telegram_send.sh
+# This value will also be used for folder name
+CI_AOSP_PROJECT=LineageOS-17.1
+# Name to display on Telegram post
+CI_AOSP_PROJECT_NAME="LineageOS 17.1"
+# Android version to display on Telegram post
+CI_AOSP_PROJECT_VERSION=10
+# These next 2 values are needed to lunch (e.g. "lineage"_whyred-"userdebug")
+CI_LUNCH_PREFIX=lineage
+CI_LUNCH_SUFFIX=userdebug
+# Target to build (e.g. to build a ROM's OTA package, use "bacon" or "otapackage", for a recovery project, use "recoveryimage")
+CI_BUILD_TARGET=bacon
+# Filename of the output. You can also use wildcards if the name isn't fixed
+CI_OUT_ARTIFACTS_NAME=lineage-*.zip
 
-import_variables
-import_more_variables
-
-ci_parse_arguments() {
-	while [ "${#}" -gt 0 ]; do
-		case "${1}" in
-			-h | --help )
-				CI_USER_NEEDS_HELP=true
-				;;
-			-c | --clean )
-				CI_CLEAN=clean
-				;;
-			-ic | --installclean )
-				CI_CLEAN=installclean
-				;;
-			-d | --device )
-				CI_DEVICE="${2}"
-				shift
-				;;
-		esac
-		shift
-	done
-}
-
-ci_help() {
-	tg_send_message "$(tg_get_chat_id "$1")" "$2
-Usage: \`/ci LineageOS-17.1 [arguments]\`
- \`-d <codename>\` (specify device codename)
- \`-c\` (if you want to do a clean build) (optional)
- \`-ic\` (if you want to cleanup previous output with installclean) (optional)" "$(tg_get_message_id "$@")"
-	exit
-}
-
-ci_message() {
-	if [ "$CI_MESSAGE_ID" = "" ]; then
-		CI_MESSAGE_ID=$(tg_send_message "$CI_CHANNEL_ID" "CI | LineageOS 17.1 (Q)
-Device: $CI_DEVICE
-
-Status: $1" | jq .result.message_id)
-	else
-		tg_edit_message_text "$CI_CHANNEL_ID" "$CI_MESSAGE_ID" "CI | LineageOS 17.1 (Q)
-Device: $CI_DEVICE
-
-Status: $1"
-	fi
-}
-
-ci_parse_arguments $(tg_get_command_arguments "$@")
-if [ "$CI_USER_NEEDS_HELP" = true ]; then
-	ci_help "$@"
-fi
-if [ "$CI_DEVICE" != "" ] && [ -d "$CI_MAIN_DIR/LineageOS-17.1" ]; then
-	ci_message "Starting..."
-	if [ "$CI_MESSAGE_ID" != "" ]; then
-		cd "$CI_MAIN_DIR/LineageOS-17.1"
-		ci_message "Setting up environment..."
-		. build/envsetup.sh
-		export SKIP_ABI_CHECKS=true
-		ci_message "Lunching..."
-		lunch lineage_${CI_DEVICE}-userdebug
-		CI_LUNCH_STATUS=$?
-		if [ $CI_LUNCH_STATUS = 0 ]; then
-			if [ "$CI_CLEAN" = "clean" ]; then
-				ci_message "Cleaning..."
-				mka clean
-			elif [ "$CI_CLEAN" = "installclean" ]; then
-				ci_message "Cleaning..."
-				mka installclean
-			fi
-			ci_message "Building..."
-			mka bacon -j$(nproc --all)
-			CI_BUILD_STATUS=$?
-			if [ $CI_BUILD_STATUS = 0 ]; then
-				if [ "$CI_ENABLE_GDRIVE_UPLOAD" = "true" ] && [ "$(command -v gupload > /dev/null 2>&1 && echo 0)" = "0" ]; then
-					ci_message "Build completed, uploading..."
-					CI_UPLOAD_LINK=$(gupload out/target/product/$CI_DEVICE/lineage-*.zip | grep "https://drive.google.com/open?id=" | sed "s/[][]//g" | tr -d '[:space:]')
-					if [ "$CI_UPLOAD_LINK" != "" ]; then
-						ci_message "Build completed
-Link: $CI_UPLOAD_LINK"
-					else
-						ci_message "Build completed, upload failed"
-					fi
-				else
-					ci_message "Build completed"
-				fi
-			else
-				ci_message "Failed at building"
-			fi
-		else
-			ci_message "Failed at lunch"
-		fi
-	else
-		tg_send_message "$(tg_get_chat_id "$@")" "Error: specified CI channel or user ID is invalid" "$(tg_get_message_id "$@")"
-	fi
-else
-	ci_help "$@" "Error: missing arguments or wrong building path"
-fi
+# Don't touch this line, unless you know what you are doing
+modules/ci/AOSP.sh "$@" --project "$CI_AOSP_PROJECT" --name "$CI_AOSP_PROJECT_NAME" --version "$CI_AOSP_PROJECT_VERSION" --lunch_prefix "$CI_LUNCH_PREFIX" --lunch_suffix "$CI_LUNCH_SUFFIX" --build_target "$CI_BUILD_TARGET" --artifacts "$CI_OUT_ARTIFACTS_NAME"
