@@ -30,9 +30,6 @@ source base/get.sh
 source base/modules.sh
 source base/updates.sh
 
-import_variables
-import_more_variables
-
 import_modules
 
 if [ $(tg_get_updates | jq .ok) = "true" ]; then

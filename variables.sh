@@ -15,20 +15,23 @@
 # limitations under the License.
 #
 
-import_variables() {
-	export TG_BOT_TOKEN=
-	export CI_APPROVED_USER_IDS= # Add user ID and separate them with a space
-	export CI_MAIN_DIR= # This folder needs to contain every ROMs and recoveries sources with proper folder naming (eg. the folder contains "LineageOS-17.1" folder, so when you launch the command it will cd into Lineage-17.1 folder and starting building). DON'T add a slash at the end of the path (eg. /home/user)
-	export CI_CHANNEL_ID= # Add channel ID/username or group ID to use for updates posting
-	# Upload artifacts if the CI script supports it by setting it to true.
-	export CI_UPLOAD_ARTIFACTS=false
-	# (please read the entire explanation) Define where to upload CI artifacts, the supported methods are: "gdrive" (Google Drive) and "mega" (MEGA)
-	# gdrive: Based on gupload script from labbots, get it from https://github.com/labbots/google-drive-upload and install it. You must first of all also configure it, read https://github.com/labbots/google-drive-upload#generating-oauth-credentials and https://github.com/labbots/google-drive-upload#first-run to configure it
-	# mega: Based on MEGAcmd, get it from https://mega.nz/cmd. You must first of all do login with the following command: "mega-login <username> <password>" then upload a random file with "mega-put <filename> /" and then create a share link with "mega-export -a /<filename>" and agree to the MEGA ToS
-	export CI_ARTIFACTS_UPLOAD_METHOD=
-}
+# Bot
+# Add here your HTTP API bot token, get it from @BotFather
+export TG_BOT_TOKEN=
 
-import_more_variables() {
-	export TG_API_URL=https://api.telegram.org/bot$TG_BOT_TOKEN
-}
+# Module - CI
+# Add user ID and separate them with a space
+export CI_APPROVED_USER_IDS=
+# This folder needs to contain every ROMs and recoveries sources with proper folder naming (eg. the folder contains "LineageOS-17.1" folder, so when you launch the command it will cd into Lineage-17.1 folder and starting building). DON'T add a slash at the end of the path (eg. /home/user)
+export CI_MAIN_DIR=
+# Add channel ID/username or group ID to use for updates posting
+export CI_CHANNEL_ID=
+# Upload artifacts if the CI script supports it by setting it to true.
+export CI_UPLOAD_ARTIFACTS=false
+# (please read the entire explanation) Define where to upload CI artifacts, the supported methods are: "gdrive" (Google Drive) and "mega" (MEGA)
+# gdrive: Based on gupload script from labbots, get it from https://github.com/labbots/google-drive-upload and install it. You must first of all also configure it, read https://github.com/labbots/google-drive-upload#generating-oauth-credentials and https://github.com/labbots/google-drive-upload#first-run to configure it
+# mega: Based on MEGAcmd, get it from https://mega.nz/cmd. You must first of all do login with the following command: "mega-login <username> <password>" then upload a random file with "mega-put <filename> /" and then create a share link with "mega-export -a /<filename>" and agree to the MEGA ToS
+export CI_ARTIFACTS_UPLOAD_METHOD=
 
+# Don't edit this!
+export TG_API_URL=https://api.telegram.org/bot$TG_BOT_TOKEN

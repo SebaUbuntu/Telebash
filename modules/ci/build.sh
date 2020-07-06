@@ -21,9 +21,6 @@ source base/telegram_get.sh
 source base/get.sh
 source base/telegram_send.sh
 
-import_variables
-import_more_variables
-
 ci_parse_arguments() {
 	while [ "${#}" -gt 0 ]; do
 		case "${1}" in

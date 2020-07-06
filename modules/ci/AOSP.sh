@@ -24,9 +24,6 @@ source base/telegram_send.sh
 # Source common uploading functions
 source modules/ci/upload.sh
 
-import_variables
-import_more_variables
-
 # Parse arguments passed by the ROM or recovery's script
 while [ "${#}" -gt 0 ]; do
 	case "${1}" in
