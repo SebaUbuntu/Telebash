@@ -15,8 +15,8 @@
 # limitations under the License.
 #
 
-export VERSION=0.6.2
-export BRANCH=Alpha
+export VERSION=1.0.0
+export BRANCH=Stable
 
 export SCRIPT_PWD=$(pwd)
 

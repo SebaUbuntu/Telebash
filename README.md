@@ -21,12 +21,15 @@
 ### Features
 
 - Module-based, so you can add and remove modules as you like
+- Easy to understand (after all, it's Bash, no?)
+- A wrapper with multiple functions is included to send and receive informations from Telegram
+
+### Modules included:
 - Admin management (ban, unban, kick, mute, unmute)
 - Automated CI system, you can trigger AOSP custom ROMs and custom recoveries building, with progress updating
-- cowsay and neofetch modules included
+- cowsay and neofetch modules
+- And more...
 
+## Want to see how this bot works or you want to create a module for this bot?
 
-
-## Want to create a module for this bot?
-
-Head over to [the wiki](https://github.com/SebaUbuntu/telegram-bot-bash/wiki) for more informations
+Head over to [the wiki](https://github.com/SebaUbuntu/HomeBot/wiki) for more informations
