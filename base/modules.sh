@@ -28,15 +28,15 @@ import_modules() {
 }
 
 execute_module() {
-	MESSAGE_TEXT="$(tg_get_message_text "$@")"
+	local MESSAGE_TEXT="$(tg_get_message_text "$@")"
 	if [[ "$MESSAGE_TEXT" == /* ]] || [[ "$MESSAGE_TEXT" == .* ]]; then
-		MESSAGE_TEXT=${MESSAGE_TEXT#?}
-		MESSAGE_TEXT_COMMAND=$(echo "$MESSAGE_TEXT" | head -n1 | awk '{print $1;}')
+		local MESSAGE_TEXT=${MESSAGE_TEXT#?}
+		local MESSAGE_TEXT_COMMAND=$(echo "$MESSAGE_TEXT" | head -n1 | awk '{print $1;}')
 		if echo "$MESSAGE_TEXT_COMMAND" | grep -q "@"; then
-			MESSAGE_TEXT_BOT=$(echo "$MESSAGE_TEXT_COMMAND" | cut -d'@' -f2)
-			MESSAGE_TEXT_COMMAND=$(echo "$MESSAGE_TEXT_COMMAND" | cut -d'@' -f1)
+			local MESSAGE_TEXT_BOT=$(echo "$MESSAGE_TEXT_COMMAND" | cut -d'@' -f2)
+			local MESSAGE_TEXT_COMMAND=$(echo "$MESSAGE_TEXT_COMMAND" | cut -d'@' -f1)
 		else
-			MESSAGE_TEXT_BOT=$(tg_get_bot_username)
+			local MESSAGE_TEXT_BOT=$(tg_get_bot_username)
 		fi
 		if [ "$MESSAGE_TEXT_BOT" = "$(tg_get_bot_username)" ]; then
 			if echo "$AVAILABLE_COMMANDS" | grep -q "$MESSAGE_TEXT_COMMAND"; then
