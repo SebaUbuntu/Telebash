@@ -26,3 +26,7 @@ module_dart() {
 module_basket() {
 	tg_send_dice --chat_id "$(tg_get_chat_id "$@")" --emoji "🏀" --reply_to_message_id "$(tg_get_message_id "$@")"
 }
+
+module_football() {
+	tg_send_dice --chat_id "$(tg_get_chat_id "$@")" --emoji "⚽️" --reply_to_message_id "$(tg_get_message_id "$@")"
+}
