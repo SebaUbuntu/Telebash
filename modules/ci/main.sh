@@ -20,9 +20,9 @@ module_ci() {
 		if [ "$CI_CHANNEL_ID" != "" ]; then
 			modules/ci/build.sh "$@" &
 		else
-			tg_send_message "$(tg_get_chat_id "$@")" "Error: CI channel or user ID not defined" "$(tg_get_message_id "$@")"
+			tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "Error: CI channel or user ID not defined" --reply_to_message_text "$(tg_get_message_id "$@")"
 		fi
 	else
-		tg_send_message "$(tg_get_chat_id "$@")" "Error: you are not authorized to use CI function of this bot, ask to who host this bot to add you to the authorized people list" "$(tg_get_message_id "$@")"
+		tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "Error: you are not authorized to use CI function of this bot, ask to who host this bot to add you to the authorized people list" --reply_to_message_text "$(tg_get_message_id "$@")"
 	fi
 }

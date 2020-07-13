@@ -17,6 +17,7 @@
 
 # Source variables and basic functions
 source variables.sh
+source base/telegram_base.sh
 source base/telegram_get.sh
 source base/get.sh
 source base/telegram_send.sh
@@ -64,11 +65,11 @@ done
 
 # Function to provide help for the CI project
 ci_help() {
-	tg_send_message "$(tg_get_chat_id "$MESSAGE")" "$2
+	tg_send_message --chat_id "$(tg_get_chat_id "$MESSAGE")" --text "$2
 Usage: \`/ci $CI_AOSP_PROJECT [arguments]\`
  \`-d <codename>\` (specify device codename)
  \`-c\` (if you want to do a clean build) (optional)
- \`-ic\` (if you want to cleanup previous output with installclean) (optional)" "$(tg_get_message_id "$MESSAGE")" --markdown
+ \`-ic\` (if you want to cleanup previous output with installclean) (optional)" --reply_to_message_id "$(tg_get_message_id "$MESSAGE")" --parse_mode "Markdown"
 	exit
 }
 
@@ -97,17 +98,17 @@ ci_parse_arguments() {
 # Common CI post update function
 ci_message() {
 	if [ "$CI_MESSAGE_ID" = "" ]; then
-		CI_MESSAGE_ID=$(tg_send_message "$CI_CHANNEL_ID" "🛠 CI | $CI_AOSP_PROJECT_NAME ($CI_AOSP_PROJECT_VERSION)
+		CI_MESSAGE_ID=$(tg_send_message --chat_id "$CI_CHANNEL_ID" --text "🛠 CI | $CI_AOSP_PROJECT_NAME ($CI_AOSP_PROJECT_VERSION)
 Device: $CI_DEVICE
 Lunch flavor: ${CI_LUNCH_PREFIX}\_${CI_DEVICE}-${CI_LUNCH_SUFFIX}
 
-Status: $1" --markdown | jq .result.message_id)
+Status: $1" --parse_mode "Markdown" | jq .result.message_id)
 	else
-		tg_edit_message_text "$CI_CHANNEL_ID" "$CI_MESSAGE_ID" "🛠 CI | $CI_AOSP_PROJECT_NAME ($CI_AOSP_PROJECT_VERSION)
+		tg_edit_message_text --chat_id "$CI_CHANNEL_ID" --message_id "$CI_MESSAGE_ID" --text "🛠 CI | $CI_AOSP_PROJECT_NAME ($CI_AOSP_PROJECT_VERSION)
 Device: $CI_DEVICE
 Lunch flavor: ${CI_LUNCH_PREFIX}\_${CI_DEVICE}-${CI_LUNCH_SUFFIX}
 
-Status: $1" --markdown
+Status: $1" --parse_mode "Markdown"
 	fi
 }
 
@@ -141,7 +142,7 @@ fi
 ci_message "Starting..."
 # If message failed to send, just report it an abort
 if [ "$CI_MESSAGE_ID" = "" ]; then
-	tg_send_message "$(tg_get_chat_id "$MESSAGE")" "Error: specified CI channel or user ID is invalid" "$(tg_get_message_id "$MESSAGE")"
+	tg_send_message --chat_id "$(tg_get_chat_id "$MESSAGE")" --text "Error: specified CI channel or user ID is invalid" --reply_to_message_id "$(tg_get_message_id "$MESSAGE")"
 	exit
 fi
 
@@ -158,7 +159,7 @@ if [ $CI_LUNCH_STATUS != 0 ]; then
 	CI_BUILD_END=$(date +"%s")
 	CI_BUILD_DURATION=$(( CI_BUILD_END - CI_BUILD_START ))
 	ci_message "Build failed at lunch in $(( CI_BUILD_DURATION / 60 )) minute(s) and $(( CI_BUILD_DURATION % 60 )) seconds"
-	tg_send_document "$CI_CHANNEL_ID" "lunch_log.txt" "$CI_MESSAGE_ID"
+	tg_send_document --chat_id "$CI_CHANNEL_ID" --document "lunch_log.txt" --reply_to_message_id "$CI_MESSAGE_ID"
 	exit
 fi
 
@@ -170,7 +171,7 @@ if [ "$CI_CLEAN" != "" ]; then
 		CI_BUILD_END=$(date +"%s")
 		CI_BUILD_DURATION=$(( CI_BUILD_END - CI_BUILD_START ))
 		ci_message "Build failed at cleaning in $(( CI_BUILD_DURATION / 60 )) minute(s) and $(( CI_BUILD_DURATION % 60 )) seconds"
-		tg_send_document "$CI_CHANNEL_ID" "clean_log.txt" "$CI_MESSAGE_ID"
+		tg_send_document --chat_id "$CI_CHANNEL_ID" --document "clean_log.txt" --reply_to_message_id "$CI_MESSAGE_ID"
 		exit
 	fi
 fi
@@ -182,7 +183,7 @@ if [ $CI_BUILD_STATUS != 0 ]; then
 	CI_BUILD_END=$(date +"%s")
 	CI_BUILD_DURATION=$(( CI_BUILD_END - CI_BUILD_START ))
 	ci_message "Build failed at building in $(( CI_BUILD_DURATION / 60 )) minute(s) and $(( CI_BUILD_DURATION % 60 )) seconds"
-	tg_send_document "$CI_CHANNEL_ID" "build_log.txt" "$CI_MESSAGE_ID"
+	tg_send_document --chat_id "$CI_CHANNEL_ID" --document "build_log.txt" --reply_to_message_id "$CI_MESSAGE_ID"
 	exit
 fi
 
