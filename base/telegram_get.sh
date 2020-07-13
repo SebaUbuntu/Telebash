@@ -17,15 +17,15 @@
 
 # Arguments: none
 tg_get_me() {
-	curl -s -X GET "$TG_API_URL/getMe" | jq .
+	telegram_main getMe GET "$@"
 }
 
 # Arguments: <curl arguments>
 tg_get_updates() {
-	curl -s -X GET "$TG_API_URL/getUpdates" $@ | jq .
+	telegram_main getUpdates GET "$@"
 }
 
 # Arguments: <chat_id> <user_id>
 tg_get_chat_member() {
-	curl -s -X GET "$TG_API_URL/getChatMember" -d chat_id="$1" -d user_id="$2" | jq ".result"
+	telegram_main getChatMember GET "$@"
 }

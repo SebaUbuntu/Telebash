@@ -32,6 +32,3 @@ export CI_UPLOAD_ARTIFACTS=false
 # gdrive: Based on gupload script from labbots, get it from https://github.com/labbots/google-drive-upload and install it. You must first of all also configure it, read https://github.com/labbots/google-drive-upload#generating-oauth-credentials and https://github.com/labbots/google-drive-upload#first-run to configure it
 # mega: Based on MEGAcmd, get it from https://mega.nz/cmd. You must first of all do login with the following command: "mega-login <username> <password>" then upload a random file with "mega-put <filename> /" and then create a share link with "mega-export -a /<filename>" and agree to the MEGA ToS
 export CI_ARTIFACTS_UPLOAD_METHOD=
-
-# Don't edit this!
-export TG_API_URL=https://api.telegram.org/bot$TG_BOT_TOKEN

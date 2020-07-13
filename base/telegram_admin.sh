@@ -17,39 +17,30 @@
 
 # Arguments: <chat_id> <user_id>
 tg_ban_user() {
-	curl -s -X GET "$TG_API_URL/kickChatMember" -d chat_id="$1" -d user_id="$2" | jq .
+	telegram_main kickChatMember GET "$@"
 }
 
 # Arguments: <chat_id> <user_id>
 tg_unban_user() {
-	curl -s -X GET "$TG_API_URL/unbanChatMember" -d chat_id="$1" -d user_id="$2" | jq .
+	telegram_main unbanChatMember GET "$@"
 }
 
 # Arguments: <chat_id> <user_id>
 tg_kick_user() {
-	local RESULT=$(curl -s -X GET "$TG_API_URL/kickChatMember" -d chat_id="$1" -d user_id="$2" | jq .)
+	local RESULT=$(telegram_main kickChatMember GET "$@")
 	if [ "$(echo "$RESULT" | jq .ok)" = "true" ]; then
-		curl -s -X GET "$TG_API_URL/unbanChatMember" -d chat_id="$1" -d user_id="$2" | jq .
+		telegram_main unbanChatMember GET "$@"
 	else
 		echo $RESULT | jq .
 	fi
 }
 
-# Arguments: <"all" or "none">
-tg_make_user_permission_list() {
-	if [ "$1" = "all" ]; then
-		echo "{\"can_send_messages\": true, \"can_send_media_messages\": true, \"can_send_polls\": true, \"can_send_other_messages\": true, \"can_add_web_page_previews\": true, \"can_change_info\": true, \"can_invite_users\": true, \"can_pin_messages\": true}" | jq .
-	elif [ "$1" = "none" ]; then
-		echo "{\"can_send_messages\": false, \"can_send_media_messages\": false, \"can_send_polls\": false, \"can_send_other_messages\": false, \"can_add_web_page_previews\": false, \"can_change_info\": false, \"can_invite_users\": false, \"can_pin_messages\": false}" | jq .
-	fi
-}
-
 # Arguments: <chat_id> <user_id>
 tg_mute_user() {
-	curl -s -X GET "$TG_API_URL/restrictChatMember" -d chat_id="$1" -d user_id="$2" -d permissions="$(tg_make_user_permission_list "none")" | jq .
+	telegram_main restrictChatMember GET "$@" --permissions "{\"can_send_messages\": false, \"can_send_media_messages\": false, \"can_send_polls\": false, \"can_send_other_messages\": false, \"can_add_web_page_previews\": false, \"can_change_info\": false, \"can_invite_users\": false, \"can_pin_messages\": false}"
 }
 
 # Arguments: <chat_id> <user_id>
 tg_unmute_user() {
-	curl -s -X GET "$TG_API_URL/restrictChatMember" -d chat_id="$1" -d user_id="$2" -d permissions="$(tg_make_user_permission_list "all")" | jq .
+	telegram_main restrictChatMember GET "$@" --permissions "{\"can_send_messages\": true, \"can_send_media_messages\": true, \"can_send_polls\": true, \"can_send_other_messages\": true, \"can_add_web_page_previews\": true, \"can_change_info\": true, \"can_invite_users\": true, \"can_pin_messages\": true}"
 }

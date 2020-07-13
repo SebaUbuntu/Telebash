@@ -22,6 +22,7 @@ export SCRIPT_PWD=$(pwd)
 
 # Source variables and basic functions
 source variables.sh
+source base/telegram_base.sh
 source base/telegram_admin.sh
 source base/telegram_get.sh
 source base/telegram_send.sh
@@ -36,7 +37,7 @@ if [ $(tg_get_updates | jq .ok) = "true" ]; then
 	echo "Bot up and running!"
 	while [ 0 != 1 ]; do
 		if [ "$LAST_UPDATE_ID" != "" ]; then
-			LAST_UPDATES=$(tg_get_updates -d offset="$LAST_UPDATE_ID")
+			LAST_UPDATES=$(tg_get_updates --offset "$LAST_UPDATE_ID")
 		else
 			LAST_UPDATES=$(tg_get_updates)
 		fi

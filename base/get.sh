@@ -82,12 +82,12 @@ tg_get_command_arguments() {
 
 # Arguments: <member_info>
 tg_get_member_first_name() {
-	echo "$@" | jq ".user.first_name" | cut -d "\"" -f 2
+	echo "$@" | jq ".result.user.first_name" | cut -d "\"" -f 2
 }
 
 # Arguments: <member_info>
 tg_get_member_last_name() {
-	echo "$@" | jq ".user.last_name" | cut -d "\"" -f 2
+	echo "$@" | jq ".result.user.last_name" | cut -d "\"" -f 2
 }
 
 # Arguments: <member_info>
@@ -97,17 +97,17 @@ tg_get_member_full_name() {
 
 # Arguments: <member_info>
 tg_get_member_user_name() {
-	echo "$@" | jq ".user.username" | cut -d "\"" -f 2
+	echo "$@" | jq ".result.user.username" | cut -d "\"" -f 2
 }
 
 # Arguments: <member_info>
 tg_get_member_user_id() {
-	echo "$@" | jq ".user.id"
+	echo "$@" | jq ".result.user.id"
 }
 
 # Arguments: <member_info>
 tg_get_member_user_language_code() {
-	echo "$@" | jq ".user.language_code" | cut -d "\"" -f 2
+	echo "$@" | jq ".result.user.language_code" | cut -d "\"" -f 2
 }
 
 # Arguments: none
