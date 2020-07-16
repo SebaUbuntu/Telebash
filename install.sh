@@ -17,7 +17,7 @@
 
 # Install dependencies
 # Note: if you want to add a package manager, PR it
-COMMON_DEPENDENCIES="bash jq cowsay neofetch"
+COMMON_DEPENDENCIES="bash jq cowsay neofetch sftp sshpass"
 APT_DEPENDENCIES="speedtest-cli"
 PACMAN_DEPENDENCIES=""
 if [ "$(command -v apt-get)" != "" ]; then
@@ -38,4 +38,8 @@ fi
 bash <(curl --compressed -s https://raw.githubusercontent.com/labbots/google-drive-upload/master/install.sh) > /dev/null 2>&1
 echo "gupload function has been installed, but be sure to configure it before enabling it with CI variable"
 echo "For informations, see this https://github.com/labbots/google-drive-upload#generating-oauth-credentials"
+
+# Add SourceForge server to the list of known hosts
+ssh-keyscan frs.sourceforge.net >> ~/.ssh/known_hosts
+
 echo "All done!"
