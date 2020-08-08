@@ -15,25 +15,33 @@
 # limitations under the License.
 #
 
+# Arguments: <file_path> <destination_dirs>
 ci_upload() {
-	if [ "$CI_ARTIFACTS_UPLOAD_METHOD" = "gdrive" ]; then
-		gupload "$1" | grep "https://drive.google.com/open?id=" | sed "s/[][]//g" | tr -d '[:space:]'
-	elif [ "$CI_ARTIFACTS_UPLOAD_METHOD" = "mega" ]; then
-		mega-put "$1" / > /dev/null 2>&1 && mega-export -a "/$(basename $1)" | awk '{print $3}'
-	elif [ "$CI_ARTIFACTS_UPLOAD_METHOD" = "sourceforge" ]; then
-		# Recursively create dirs and upload file
-		sshpass -p $CI_SF_PASS sftp -oBatchMode=no $CI_SF_USER@frs.sourceforge.net:/home/frs/project/$CI_SF_PROJECT > /dev/null 2>&1 <<EOF
-mkdir CI
-cd CI
-mkdir $CI_AOSP_PROJECT
-cd $CI_AOSP_PROJECT
-mkdir $CI_DEVICE
-cd $CI_DEVICE
-put $1
+	local FILE_PATH="$1"
+	[ ! -f "$FILE_PATH" ] && return 2
+	shift
+	local DESTINATION_DIRS="$@"
+	for dir in $DESTINATION_DIRS; do
+		[ "$FULL_DESTINATION_DIR" = "" ] && local FULL_DESTINATION_DIR="$dir" || local FULL_DESTINATION_DIR="${FULL_DESTINATION_DIR}/${dir}"
+	done
+	if [ "$CI_ARTIFACTS_UPLOAD_METHOD" = gdrive ]; then
+		gupload "$FILE_PATH" | grep "https://drive.google.com/open?id=" | sed "s/[][]//g" | tr -d '[:space:]'
+	elif [ "$CI_ARTIFACTS_UPLOAD_METHOD" = mega ]; then
+		mega-put "$FILE_PATH" "/$FULL_DESTINATION_DIR" > /dev/null 2>&1 && mega-export -a "/$FULL_DESTINATION_DIR/$(basename $FILE_PATH)" | awk '{print $3}'
+	elif [ "$CI_ARTIFACTS_UPLOAD_METHOD" = sourceforge ]; then
+		for dir in $DESTINATION_DIRS; do
+			sshpass -p $CI_SF_PASS sftp -oBatchMode=no $CI_SF_USER@frs.sourceforge.net:/home/frs/project/$CI_SF_PROJECT/$FULL_DESTINATION_DIR > /dev/null 2>&1 <<EOF
+mkdir $dir
+exit
+EOF
+			[ "$SF_DESTINATION_DIR" = "" ] && local SF_DESTINATION_DIR="$dir" || local SF_DESTINATION_DIR="${SF_DESTINATION_DIR}/${dir}"
+		done
+		sshpass -p $CI_SF_PASS sftp -oBatchMode=no $CI_SF_USER@frs.sourceforge.net:/home/frs/project/$CI_SF_PROJECT/$FULL_DESTINATION_DIR > /dev/null 2>&1 <<EOF
+put $FILE_PATH
 exit
 EOF
 		# Pass download link to the CI project script
-		echo "https://sourceforge.net/projects/$CI_SF_PROJECT/files/CI/$CI_AOSP_PROJECT/$CI_DEVICE/$(basename "$1")/download"
+		echo "https://sourceforge.net/projects/$CI_SF_PROJECT/files/$FULL_DESTINATION_DIR/$(basename "$FILE_PATH")/download"
 	fi
 }
 

@@ -208,7 +208,8 @@ for artifact in $(ls out/target/product/$CI_DEVICE/$CI_OUT_ARTIFACTS_NAME); do
 	CI_CURRENT_ARTIFACTS_NUMBER=$(( CI_CURRENT_ARTIFACTS_NUMBER + 1 ))
 	ci_update_links_in_message
 	# Upload the artifact
-	CI_CURRENT_ARTIFACT_LINK=$(ci_upload "$artifact")
+	# TODO: Stop using hardcoded AOSP project type
+	CI_CURRENT_ARTIFACT_LINK=$(ci_upload "$artifact" "ROMs" "$CI_AOSP_PROJECT" "$CI_DEVICE")
 	if [ "$CI_CURRENT_ARTIFACT_LINK" != "" ] || [ "$CI_CURRENT_ARTIFACT_LINK" != "WIP" ]; then
 		# It's a valid link, add it to artifact list
 		ci_add_link_to_list "$CI_CURRENT_ARTIFACTS_NUMBER): [$(basename "$artifact" | sed 's/_/\\_/g')]($CI_CURRENT_ARTIFACT_LINK)"
