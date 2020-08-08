@@ -40,6 +40,7 @@ echo "gupload function has been installed, but be sure to configure it before en
 echo "For informations, see this https://github.com/labbots/google-drive-upload#generating-oauth-credentials"
 
 # Add SourceForge server to the list of known hosts
+[ ! -d ~/.ssh ] && mkdir ~/.ssh
 ssh-keyscan frs.sourceforge.net >> ~/.ssh/known_hosts
 
 echo "All done!"
