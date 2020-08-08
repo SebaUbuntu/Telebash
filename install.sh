@@ -17,7 +17,7 @@
 
 # Install dependencies
 # Note: if you want to add a package manager, PR it
-COMMON_DEPENDENCIES="bash jq cowsay neofetch sftp sshpass"
+COMMON_DEPENDENCIES="bash jq cowsay neofetch openssh sshpass"
 APT_DEPENDENCIES="speedtest-cli"
 PACMAN_DEPENDENCIES=""
 if [ "$(command -v apt-get)" != "" ]; then
