@@ -42,6 +42,9 @@ exit
 EOF
 		# Pass download link to the CI project script
 		echo "https://sourceforge.net/projects/$CI_SF_PROJECT/files/$FULL_DESTINATION_DIR/$(basename "$FILE_PATH")/download"
+	elif [ "$CI_ARTIFACTS_UPLOAD_METHOD" = "localcopy" ]; then
+		mkdir -p "$CI_LOCAL_COPY_DIR/$FULL_DESTINATION_DIR"
+		cp "$FILE_PATH" "$CI_LOCAL_COPY_DIR/$FULL_DESTINATION_DIR"
 	fi
 }
 
@@ -52,5 +55,7 @@ ci_name() {
 		printf "MEGA"
 	elif [ "$CI_ARTIFACTS_UPLOAD_METHOD" = "sourceforge" ]; then
 		printf "SourceForge"
+	elif [ "$CI_ARTIFACTS_UPLOAD_METHOD" = "localcopy" ]; then
+		printf "Copy to local directory"
 	fi
 }

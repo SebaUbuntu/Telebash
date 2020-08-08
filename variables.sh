@@ -30,3 +30,5 @@ export CI_ARTIFACTS_UPLOAD_METHOD=
 export CI_SF_PROJECT=
 export CI_SF_USER=
 export CI_SF_PASS=
+# If you use local copy method, please fill the following variables:
+export CI_LOCAL_COPY_DIR=
