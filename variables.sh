@@ -32,3 +32,8 @@ export CI_SF_USER=
 export CI_SF_PASS=
 # If you use local copy method, please fill the following variables:
 export CI_LOCAL_COPY_DIR=
+
+# Module - Weather
+# Read this before continuing: https://github.com/SebaUbuntu/HomeBot/wiki/Module-%7C-Weather#variables
+export WEATHER_API_KEY=
+export WEATHER_TEMP_UNIT="metric"
