@@ -1,10 +1,8 @@
 # HomeBot
 
-## A modular Telegram bot, written on Bash
+### A modular Telegram bot, written on Bash
 
-
-
-### How to use it:
+### How to use it...
 
 - Launch `install.sh` to install all the dependencies
 
@@ -12,10 +10,20 @@
 
 - Edit additional variables in `variables.sh`
 
+#### As a bot:
+
 - Launch the bot by typing 
 
   ```bash
   ./start.sh
+  ```
+
+#### As a wrapper (do stuff from CLI or other scripts)
+
+* Source all functions and variables with
+
+  ```bash
+  source base/telegram.sh
   ```
 
 ### Features
@@ -25,9 +33,12 @@
 - A wrapper with multiple functions is included to send and receive informations from Telegram
 
 ### Modules included:
-- Admin management (ban, unban, kick, mute, unmute)
-- Automated CI system, you can trigger AOSP custom ROMs and custom recoveries building, with progress updating
-- cowsay and neofetch modules
+
+- weather | Get weather updates of a city
+- speedtest | Test bot's Internet connection speed
+- CI | Automated CI system, you can trigger AOSP custom ROMs and custom recoveries building, with progress updating
+- cowsay
+- neofetch
 - And more...
 
 ## Want to see how this bot works or you want to create a module for this bot?
