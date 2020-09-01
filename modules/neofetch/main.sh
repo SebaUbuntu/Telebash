@@ -16,5 +16,5 @@
 #
 
 module_neofetch() {
-	tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "\`$(neofetch --stdout)\`" --reply_to_message_id "$(tg_get_message_id "$@")" --parse_mode "Markdown"
+	telegram sendMessage --chat_id "$(tg_get_chat_id "$@")" --text "\`$(neofetch --stdout)\`" --reply_to_message_id "$(tg_get_message_id "$@")" --parse_mode "Markdown"
 }
