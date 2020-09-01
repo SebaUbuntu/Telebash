@@ -38,13 +38,13 @@ if [ "$CI_PROJECT" != "" ]; then
 	if [ -f "modules/ci/$CI_PROJECT.sh" ]; then
 		modules/ci/$CI_PROJECT.sh "$@"
 	else
-		tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "CI building failed: Project not found
+		telegram sendMessage --chat_id "$(tg_get_chat_id "$@")" --text "CI building failed: Project not found
 
 Usage: \`/ci <project> [arguments]\`
 Arguments are project-specific, to know what arguments you can use with a project, use \`-h\` or \`--help\`." --reply_to_message_id "$(tg_get_message_id "$@")" --parse_mode "Markdown"
 	fi
 else
-	tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "CI building failed: No projects has been defined
+	telegram sendMessage --chat_id "$(tg_get_chat_id "$@")" --text "CI building failed: No projects has been defined
 
 Usage: \`/ci <project> [arguments]\`
 Arguments are project-specific, to know what arguments you can use with a project, use \`-h\` or \`--help\`." --reply_to_message_id "$(tg_get_message_id "$@")" --parse_mode "Markdown"

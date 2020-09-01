@@ -62,7 +62,7 @@ done
 
 # Function to provide help for the CI project
 ci_help() {
-	tg_send_message --chat_id "$(tg_get_chat_id "$MESSAGE")" --text "$2
+	telegram sendMessage --chat_id "$(tg_get_chat_id "$MESSAGE")" --text "$2
 Usage: \`/ci $CI_AOSP_PROJECT [arguments]\`
  \`-d <codename>\` (specify device codename)
  \`-c\` (if you want to do a clean build) (optional)
@@ -95,13 +95,13 @@ ci_parse_arguments() {
 # Common CI post update function
 ci_message() {
 	if [ "$CI_MESSAGE_ID" = "" ]; then
-		CI_MESSAGE_ID=$(tg_send_message --chat_id "$CI_CHANNEL_ID" --text "🛠 CI | $CI_AOSP_PROJECT_NAME ($CI_AOSP_PROJECT_VERSION)
+		CI_MESSAGE_ID=$(telegram sendMessage --chat_id "$CI_CHANNEL_ID" --text "🛠 CI | $CI_AOSP_PROJECT_NAME ($CI_AOSP_PROJECT_VERSION)
 Device: $CI_DEVICE
 Lunch flavor: ${CI_LUNCH_PREFIX}\_${CI_DEVICE}-${CI_LUNCH_SUFFIX}
 
 Status: $1" --parse_mode "Markdown" | jq .result.message_id)
 	else
-		tg_edit_message_text --chat_id "$CI_CHANNEL_ID" --message_id "$CI_MESSAGE_ID" --text "🛠 CI | $CI_AOSP_PROJECT_NAME ($CI_AOSP_PROJECT_VERSION)
+		telegram editMessageText --chat_id "$CI_CHANNEL_ID" --message_id "$CI_MESSAGE_ID" --text "🛠 CI | $CI_AOSP_PROJECT_NAME ($CI_AOSP_PROJECT_VERSION)
 Device: $CI_DEVICE
 Lunch flavor: ${CI_LUNCH_PREFIX}\_${CI_DEVICE}-${CI_LUNCH_SUFFIX}
 
@@ -139,7 +139,7 @@ fi
 ci_message "Starting..."
 # If message failed to send, just report it an abort
 if [ "$CI_MESSAGE_ID" = "" ]; then
-	tg_send_message --chat_id "$(tg_get_chat_id "$MESSAGE")" --text "Error: specified CI channel or user ID is invalid" --reply_to_message_id "$(tg_get_message_id "$MESSAGE")"
+	telegram sendMessage --chat_id "$(tg_get_chat_id "$MESSAGE")" --text "Error: specified CI channel or user ID is invalid" --reply_to_message_id "$(tg_get_message_id "$MESSAGE")"
 	exit
 fi
 
