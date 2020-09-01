@@ -16,14 +16,14 @@
 #
 
 module_start() {
-	tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "Hi! I'm a multifunction bot, written in Bash by SebaUbuntu, because Python is boring
+	telegram sendMessage --chat_id "$(tg_get_chat_id "$@")" --text "Hi! I'm a multifunction bot, written in Bash by SebaUbuntu, because Python is boring
 I use modules to expand my features, you can see what commands you can use by typing .modules
 
 Version: $VERSION ($BRANCH)"
 }
 
 module_info() {
-	tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "\`\`\`
+	telegram sendMessage --chat_id "$(tg_get_chat_id "$@")" --text "\`\`\`
 SebaUbuntu's Bash bot
 Version: $VERSION ($BRANCH)
 
@@ -37,7 +37,7 @@ Architecture: $(uname -m)
 }
 
 module_runs() {
-	tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "🏃" --reply_to_message_id "$(tg_get_message_id "$@")"
+	telegram sendMessage --chat_id "$(tg_get_chat_id "$@")" --text "🏃" --reply_to_message_id "$(tg_get_message_id "$@")"
 }
 
 module_modules() {
@@ -51,7 +51,7 @@ module_modules() {
 		done
 		local MODULE_LIST_MESSAGE="$MODULE_LIST_MESSAGE \`\`\`"
 	done
-	tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "$MODULE_LIST_MESSAGE" --reply_to_message_id "$(tg_get_message_id "$@")" --parse_mode "Markdown"
+	telegram sendMessage --chat_id "$(tg_get_chat_id "$@")" --text "$MODULE_LIST_MESSAGE" --reply_to_message_id "$(tg_get_message_id "$@")" --parse_mode "Markdown"
 }
 
 module_me() {
@@ -61,7 +61,6 @@ Full name: $(tg_get_member_full_name "$CHAT_MEMBER_INFO")
 Username: @$(tg_get_member_user_name "$CHAT_MEMBER_INFO")
 User ID: \`$(tg_get_member_user_id "$CHAT_MEMBER_INFO")\`
 Language: $(tg_get_member_user_language_code "$CHAT_MEMBER_INFO")
-Role: $(tg_get_member_status "$CHAT_MEMBER_INFO")
 "
-	tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "$ME_MESSAGE" --reply_to_message_id "$(tg_get_message_id "$@")" --parse_mode "Markdown"
+	telegram sendMessage --chat_id "$(tg_get_chat_id "$@")" --text "$ME_MESSAGE" --reply_to_message_id "$(tg_get_message_id "$@")" --parse_mode "Markdown"
 }
