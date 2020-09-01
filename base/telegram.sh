@@ -20,7 +20,6 @@ source variables.sh
 source base/telegram_admin.sh
 source base/telegram_get.sh
 source base/telegram_send.sh
-source base/admin.sh
 source base/get.sh
 source base/modules.sh
 source base/updates.sh
