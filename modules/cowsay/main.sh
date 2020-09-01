@@ -17,9 +17,9 @@
 
 module_cowsay() {
 	if [ "$(tg_get_command_arguments "$@")" != "" ]; then
-		tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "\`$(cowsay "$(tg_get_command_arguments "$@")")\`" --reply_to_message_id "$(tg_get_message_id "$@")" --parse_mode "Markdown"
+		telegram sendMessage --chat_id "$(tg_get_chat_id "$@")" --text "\`$(cowsay "$(tg_get_command_arguments "$@")")\`" --reply_to_message_id "$(tg_get_message_id "$@")" --parse_mode "Markdown"
 	else
-		tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "Error: please write something after the command" --reply_to_message_id "$(tg_get_message_id "$@")"
+		telegram sendMessage --chat_id "$(tg_get_chat_id "$@")" --text "Error: please write something after the command" --reply_to_message_id "$(tg_get_message_id "$@")"
 	fi
 
 }
