@@ -26,13 +26,13 @@ source base/telegram.sh
 
 import_modules
 
-if [ $(tg_get_updates | jq .ok) = "true" ]; then
+if [ $(telegram getUpdates | jq .ok) = "true" ]; then
 	echo "Bot up and running!"
 	while [ 0 != 1 ]; do
 		if [ "$LAST_UPDATE_ID" != "" ]; then
-			LAST_UPDATES=$(tg_get_updates --offset "$LAST_UPDATE_ID")
+			LAST_UPDATES=$(telegram getUpdates --offset "$LAST_UPDATE_ID")
 		else
-			LAST_UPDATES=$(tg_get_updates)
+			LAST_UPDATES=$(telegram getUpdates)
 		fi
 		UNREAD_UPDATES_NUMBER="$(tg_get_unread_updates_number "$LAST_UPDATES")"
 		if [ "$UNREAD_UPDATES_NUMBER" != "0" ]; then
