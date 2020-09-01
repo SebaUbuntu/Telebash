@@ -18,7 +18,7 @@
 module_weather() {
 	local city="$(tg_get_command_arguments "$@")"
 	if [ "$city" = "" ]; then
-		tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "Error: city not specified
+		telegram sendMessage --chat_id "$(tg_get_chat_id "$@")" --text "Error: city not specified
 Example: /weather New York"  --reply_to_message_id "$(tg_get_message_id "$@")" --parse_mode "Markdown"
 		return 1
 	fi
@@ -37,7 +37,7 @@ Example: /weather New York"  --reply_to_message_id "$(tg_get_message_id "$@")" -
 	local current="$(curl -s -X GET "https://api.openweathermap.org/data/2.5/weather?appid=${WEATHER_API_KEY}&q=${city}&units=${WEATHER_TEMP_UNIT}")"
 
 	if [ "$(echo "$current" | jq .cod | cut -d "\"" -f 2)" != 200 ]; then
-		tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "Error $(echo "$current" | jq .cod | cut -d "\"" -f 2): $(echo "$current" | jq .message | cut -d "\"" -f 2)" --reply_to_message_id "$(tg_get_message_id "$@")" --parse_mode "Markdown"
+		telegram sendMessage --chat_id "$(tg_get_chat_id "$@")" --text "Error $(echo "$current" | jq .cod | cut -d "\"" -f 2): $(echo "$current" | jq .message | cut -d "\"" -f 2)" --reply_to_message_id "$(tg_get_message_id "$@")" --parse_mode "Markdown"
 		return 1
 	fi
 
@@ -53,7 +53,7 @@ Example: /weather New York"  --reply_to_message_id "$(tg_get_message_id "$@")" -
 	local humidity="$(echo "$current" | jq .main.humidity)"
 	local wind_speed="$(echo "$current" | jq .wind.speed)"
 
-	tg_send_message --chat_id "$(tg_get_chat_id "$@")" --text "
+	telegram sendMessage --chat_id "$(tg_get_chat_id "$@")" --text "
 Current weather for ${city_name}, ${city_country} (${city_lat}, ${city_lon}):
 Weather: ${weather_type} (${weather_type_description})
 Temperature: ${temp}${temp_unit} (Min: ${temp_min}${temp_unit} Max: ${temp_max}${temp_unit})
