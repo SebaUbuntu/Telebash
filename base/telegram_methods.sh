@@ -15,6 +15,16 @@
 # limitations under the License.
 #
 
+# Arguments: <curl arguments>
+tg_get_updates() {
+	telegram_main getUpdates GET "$@"
+}
+
+# Arguments: none
+tg_get_me() {
+	telegram_main getMe GET "$@"
+}
+
 # Arguments: <chatid> <message_text> <message_id (for reply, optional)>
 tg_send_message() {
 	telegram_main sendMessage POST "$@"
@@ -45,6 +55,31 @@ tg_send_animation() {
 	telegram_main sendAnimation POST_FILE "$@"
 }
 
+# Arguments: <chatid> <emoji> <message_id (for reply, optional)>
+tg_send_dice() {
+	telegram_main sendDice POST "$@"
+}
+
+# Arguments: <chat_id> <user_id>
+tg_ban_user() {
+	telegram_main kickChatMember GET "$@"
+}
+
+# Arguments: <chat_id> <user_id>
+tg_unban_user() {
+	telegram_main unbanChatMember GET "$@"
+}
+
+# Arguments: <chat_id> <user_id>
+tg_restrict_chat_member() {
+	telegram_main restrictChatMember GET "$@"
+}
+
+# Arguments: <chat_id> <user_id>
+tg_get_chat_member() {
+	telegram_main getChatMember GET "$@"
+}
+
 # Arguments: <chatid> <message_id> <message_text>
 tg_edit_message_text() {
 	telegram_main editMessageText POST "$@"
@@ -53,9 +88,4 @@ tg_edit_message_text() {
 # Arguments: <chatid> <message_id> <message_text>
 tg_edit_message_caption() {
 	telegram_main editMessageMedia POST "$@"
-}
-
-# Arguments: <chatid> <emoji> <message_id (for reply, optional)>
-tg_send_dice() {
-	telegram_main sendDice POST "$@"
 }

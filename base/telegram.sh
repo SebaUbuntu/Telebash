@@ -17,9 +17,7 @@
 
 # Main wrapper, source all the components
 source variables.sh
-source base/telegram_admin.sh
-source base/telegram_get.sh
-source base/telegram_send.sh
+source base/telegram_methods.sh
 source base/get.sh
 source base/modules.sh
 source base/updates.sh
