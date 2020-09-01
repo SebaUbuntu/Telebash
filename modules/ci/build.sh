@@ -17,10 +17,7 @@
 
 # Source variables and basic functions
 source variables.sh
-source base/telegram_base.sh
-source base/telegram_get.sh
-source base/get.sh
-source base/telegram_send.sh
+source base/telegram.sh
 
 ci_parse_arguments() {
 	while [ "${#}" -gt 0 ]; do
