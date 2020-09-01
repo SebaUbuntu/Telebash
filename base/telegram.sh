@@ -17,15 +17,22 @@
 
 # Main wrapper, source all the components
 source variables.sh
-source base/telegram_methods.sh
 source base/get.sh
 source base/modules.sh
 source base/updates.sh
 
-telegram_main() {
+telegram() {
 	local ACTION=${1}
-	local HTTP_REQUEST=${2}
 	local CURL_ARGUMENTS=()
+	local POST_FILE_METHODS="sendAnimation | sendAudio | sendDocument | sendPhoto | sendVideo"
+	case $ACTION in
+		$POST_FILE_METHODS)
+		HTTP_REQUEST=POST_FILE
+		;;
+		*)
+		HTTP_REQUEST=GET
+		;;
+	esac
 	while [ "${#}" -gt 0 ]; do
 		case "${1}" in
 			--animation | --audio | --document | --photo | --video )
@@ -43,35 +50,5 @@ telegram_main() {
 		esac
 		shift
 	done
-	telegram_curl "$ACTION" "$HTTP_REQUEST" "${CURL_ARGUMENTS[@]}"
-}
-
-telegram_curl() {
-	local ACTION=${1}
-	shift
-	local HTTP_REQUEST=${1}
-	shift
-	if [ "$HTTP_REQUEST" != "POST_FILE" ]; then
-		curl -s -X $HTTP_REQUEST "https://api.telegram.org/bot$TG_BOT_TOKEN/$ACTION" "$@" | jq .
-	else
-		curl -s "https://api.telegram.org/bot$TG_BOT_TOKEN/$ACTION" "$@" | jq .
-	fi
-}
-
-telegram_curl_get() {
-	local ACTION=${1}
-	shift
-	telegram_main "$ACTION" GET "$@"
-}
-
-telegram_curl_post() {
-	local ACTION=${1}
-	shift
-	telegram_main "$ACTION" POST "$@"
-}
-
-telegram_curl_post_file() {
-	local ACTION=${1}
-	shift
-	telegram_main "$ACTION" POST_FILE "$@"
+	curl -s "https://api.telegram.org/bot$TG_BOT_TOKEN/$ACTION" "${CURL_ARGUMENTS[@]}" | jq .
 }
