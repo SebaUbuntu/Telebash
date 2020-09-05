@@ -55,7 +55,7 @@ module_modules() {
 }
 
 module_me() {
-	local CHAT_MEMBER_INFO=$(tg_get_chat_member --chat_id "$(tg_get_chat_id "$@")" --user_id "$(tg_get_sender_id "$@")")
+	local CHAT_MEMBER_INFO=$(telegram getChatMember --chat_id "$(tg_get_chat_id "$@")" --user_id "$(tg_get_sender_id "$@")")
 	local ME_MESSAGE="Information about you:
 Full name: $(tg_get_member_full_name "$CHAT_MEMBER_INFO")
 Username: @$(tg_get_member_user_name "$CHAT_MEMBER_INFO")
