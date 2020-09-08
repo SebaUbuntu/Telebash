@@ -157,7 +157,7 @@ if [ $CI_LUNCH_STATUS != 0 ]; then
 	CI_BUILD_DURATION=$(( CI_BUILD_END - CI_BUILD_START ))
 	ci_message "Build failed at lunch in $(( CI_BUILD_DURATION / 60 )) minute(s) and $(( CI_BUILD_DURATION % 60 )) seconds"
 	telegram sendDocument --chat_id "$CI_CHANNEL_ID" --document "lunch_log.txt" --reply_to_message_id "$CI_MESSAGE_ID"
-	return 1
+	exit
 fi
 
 if [ "$CI_CLEAN" != "" ]; then
@@ -169,7 +169,7 @@ if [ "$CI_CLEAN" != "" ]; then
 		CI_BUILD_DURATION=$(( CI_BUILD_END - CI_BUILD_START ))
 		ci_message "Build failed at cleaning in $(( CI_BUILD_DURATION / 60 )) minute(s) and $(( CI_BUILD_DURATION % 60 )) seconds"
 		telegram sendDocument --chat_id "$CI_CHANNEL_ID" --document "clean_log.txt" --reply_to_message_id "$CI_MESSAGE_ID"
-		return 1
+		exit
 	fi
 fi
 
@@ -181,7 +181,7 @@ if [ $CI_BUILD_STATUS != 0 ]; then
 	CI_BUILD_DURATION=$(( CI_BUILD_END - CI_BUILD_START ))
 	ci_message "Build failed at building in $(( CI_BUILD_DURATION / 60 )) minute(s) and $(( CI_BUILD_DURATION % 60 )) seconds"
 	telegram sendDocument --chat_id "$CI_CHANNEL_ID" --document "build_log.txt" --reply_to_message_id "$CI_MESSAGE_ID"
-	return 1
+	exit
 fi
 
 CI_BUILD_END=$(date +"%s")
