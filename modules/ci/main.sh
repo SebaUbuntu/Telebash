@@ -16,7 +16,12 @@
 #
 
 module_ci() {
-	if echo "$(tg_get_sender_id "$@")" | grep -q "$CI_APPROVED_USER_IDS"; then
+	for userid in $CI_APPROVED_USER_IDS; do
+		if [ "$(tg_get_sender_id "$@")" = "$userid" ]; then
+			local CI_AUTHORIZED=true
+		fi
+	done
+	if [ "$CI_AUTHORIZED" = true ]; then
 		if [ "$CI_CHANNEL_ID" != "" ]; then
 			modules/ci/build.sh "$@" &
 		else
