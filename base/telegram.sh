@@ -12,15 +12,15 @@ source base/modules.sh
 source base/updates.sh
 
 telegram() {
-	local ACTION=${1}
+	local ACTION="${1}"
 	local CURL_ARGUMENTS=()
-	case $ACTION in
+	case "${ACTION}" in
 		sendAnimation | sendAudio | sendDocument | sendPhoto | sendVideo)
-		HTTP_REQUEST=POST_FILE
-		;;
+			HTTP_REQUEST=POST_FILE
+			;;
 		*)
-		HTTP_REQUEST=GET
-		;;
+			HTTP_REQUEST=GET
+			;;
 	esac
 	while [ "${#}" -gt 0 ]; do
 		case "${1}" in
@@ -39,5 +39,5 @@ telegram() {
 		esac
 		shift
 	done
-	curl -s "https://api.telegram.org/bot$TG_BOT_TOKEN/$ACTION" "${CURL_ARGUMENTS[@]}" "$FILE_ARGUMENT" | jq .
+	curl -s "https://api.telegram.org/bot${TG_BOT_TOKEN}/${ACTION}" "${CURL_ARGUMENTS[@]}" "${FILE_ARGUMENT}" | jq .
 }

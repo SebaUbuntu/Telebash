@@ -22,12 +22,12 @@ tg_get_unread_updates_number() {
 
 # Arguments: <update in JSON> <offset>
 tg_get_specific_update() {
-	tg_get_update_result "$1" | jq ".[$2]"
+	tg_get_update_result "${1}" | jq ".[${2}]"
 }
 
 # Arguments: <update in JSON>
 tg_get_last_update_id() {
-	UPDATE_NUMBER=$(tg_get_unread_updates_number "$@")
-	UPDATE_NUMBER=$(( UPDATES_NUMBER - 1 ))
-	tg_get_specific_update "$@" "$UPDATE_NUMBER" | jq ".update_id"
+	UPDATE_NUMBER="$(tg_get_unread_updates_number "$@")"
+	UPDATE_NUMBER="$(( UPDATES_NUMBER - 1 ))"
+	tg_get_specific_update "$@" "${UPDATE_NUMBER}" | jq ".update_id"
 }
