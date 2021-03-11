@@ -19,7 +19,7 @@ import_modules() {
 
 execute_module() {
 	local MESSAGE_TEXT="$(tg_get_message_text "$@")"
-	if [[ "$MESSAGE_TEXT" == /* ]] || [[ "$MESSAGE_TEXT" == .* ]]; then
+	if [[ "$MESSAGE_TEXT" == /* ]]; then
 		local MESSAGE_TEXT=${MESSAGE_TEXT#?}
 		local MESSAGE_TEXT_COMMAND=$(echo "$MESSAGE_TEXT" | head -n1 | awk '{print $1;}')
 		if echo "$MESSAGE_TEXT_COMMAND" | grep -q "@"; then
