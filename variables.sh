@@ -1,18 +1,8 @@
 #!/bin/bash
 #
-# Copyright (C) 2020 SebaUbuntu's HomeBot
+# Copyright (C) 2021 Telebash
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-License-Identifier: Apache-2.0
 #
 
 # Bot
@@ -20,7 +10,7 @@
 export TG_BOT_TOKEN=
 
 # Module - CI
-# Read this before continuing: https://github.com/SebaUbuntu/HomeBot/wiki/Module-%7C-CI#variables
+# Read this before continuing: https://github.com/SebaUbuntu/Telebash/wiki/Module-%7C-CI#variables
 export CI_APPROVED_USER_IDS=
 export CI_MAIN_DIR=
 export CI_CHANNEL_ID=
@@ -34,6 +24,6 @@ export CI_SF_PASS=
 export CI_LOCAL_COPY_DIR=
 
 # Module - Weather
-# Read this before continuing: https://github.com/SebaUbuntu/HomeBot/wiki/Module-%7C-Weather#variables
+# Read this before continuing: https://github.com/SebaUbuntu/Telebash/wiki/Module-%7C-Weather#variables
 export WEATHER_API_KEY=
 export WEATHER_TEMP_UNIT="metric"

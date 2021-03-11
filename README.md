@@ -1,4 +1,4 @@
-# HomeBot
+# Telebash
 
 ### A modular Telegram bot, written on Bash
 
@@ -43,4 +43,4 @@
 
 ## Want to see how this bot works or you want to create a module for this bot?
 
-Head over to [the wiki](https://github.com/SebaUbuntu/HomeBot/wiki) for more informations
+Head over to [the wiki](https://github.com/SebaUbuntu/Telebash/wiki) for more informations
