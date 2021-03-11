@@ -8,7 +8,7 @@ You can also use this wrapper as a bot (the script will process every new update
 
 ## Usage
 ### Setup
-- Launch `install.sh` to install all the dependencies
+- Launch `setup.sh` to install all the dependencies
 
 - Copy `example_variables.sh` to `variables.sh`
 
