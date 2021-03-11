@@ -6,10 +6,9 @@
 #
 
 # Main wrapper, source all the components
-source variables.sh
-source base/get.sh
-source base/modules.sh
-source base/updates.sh
+source "${TELEBASH_DIR}/base/get.sh"
+source "${TELEBASH_DIR}/base/modules.sh"
+source "${TELEBASH_DIR}/base/updates.sh"
 
 telegram() {
 	local ACTION="${1}"

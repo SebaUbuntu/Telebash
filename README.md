@@ -2,7 +2,7 @@
 ## A modular Telegram wrapper/bot, written on Bash
 This wrapper allows you to easily interact with Telegram bot APIs.
 
-Sourcing `base/telegram.sh` will give you the command `telegram`, which you can use together with all available API methods (https://core.telegram.org/bots/api#available-methods).
+Sourcing `telebash.sh` will give you the command `telegram`, which you can use together with all available API methods (https://core.telegram.org/bots/api#available-methods).
 
 You can also use this wrapper as a bot (the script will process every new update got with getUpdates method); a module manager and some modules are provided.
 
@@ -20,14 +20,14 @@ You can also use this wrapper as a bot (the script will process every new update
 * Source all functions and variables with
 
   ```bash
-  source base/telegram.sh
+  source telebash.sh
   ```
 
 #### Use as a bot:
 - Launch the bot by typing 
 
   ```bash
-  ./start.sh
+  ./telebash.sh
   ```
 
 ### Features

@@ -8,11 +8,16 @@
 export VERSION="2.0.0"
 export BRANCH="Stable"
 
-export SCRIPT_PWD="$(pwd)"
+export TELEBASH_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 # Source variables and basic functions
-source variables.sh
-source base/telegram.sh
+source "${TELEBASH_DIR}/base/telegram.sh"
+source "${TELEBASH_DIR}/variables.sh"
+
+# If we're being sourced, let's stop right here
+if [ "${BASH_SOURCE[0]}" != "${0}" ]; then
+    return
+fi
 
 import_modules
 

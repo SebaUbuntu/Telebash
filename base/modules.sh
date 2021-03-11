@@ -6,11 +6,11 @@
 #
 
 import_modules() {
-	for module in $(ls modules/*/main.sh); do
+	for module in $(ls ${TELEBASH_DIR}/modules/*/main.sh); do
 		source "${module}"
 	done
 
-	for module_commands_file in $(ls modules/*/commands.txt); do
+	for module_commands_file in $(ls ${TELEBASH_DIR}/modules/*/commands.txt); do
 		for commands in $(cat "${module_commands_file}"); do
 			export AVAILABLE_COMMANDS="${AVAILABLE_COMMANDS} ${commands}"
 		done
