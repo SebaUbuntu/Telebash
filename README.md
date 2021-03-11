@@ -10,6 +10,8 @@ You can also use this wrapper as a bot (the script will process every new update
 ### Setup
 - Launch `install.sh` to install all the dependencies
 
+- Copy `example_variables.sh` to `variables.sh`
+
 - Put a bot token in `variables.sh`
 
 - Edit additional variables in `variables.sh`
