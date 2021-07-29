@@ -7,7 +7,10 @@
 
 # Install dependencies
 # Note: if you want to add a package manager, PR it
-DEPENDENCIES="bash jq"
+DEPENDENCIES="bash jq cowsay neofetch speedtest-cli git"
+
+apt-get -qqy update
+
 if [ "$(command -v apt-get)" != "" ]; then
 	sudo apt-get install ${DEPENDENCIES}
 elif [ "$(command -v pacman)" != "" ]; then
@@ -15,5 +18,8 @@ elif [ "$(command -v pacman)" != "" ]; then
 else
 	echo "Distro not supported, please install the following dependencies by yourself: ${DEPENDENCIES}"
 fi
+
+apt-get -qqy clean
+apt-get -qqy autoremove
 
 echo "All done!"
