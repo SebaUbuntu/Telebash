@@ -41,12 +41,12 @@ You can also use this wrapper as a bot (the script will process every new update
 - Module-based, so you can add and remove modules as you like
 
 ##### Modules included:
-- animated_emoji | Send an animated emoji
-- echo | Repeat what you say
-- info | Core module that provides basic functionalities that you would expect in a Telegram bot
 - weather | Get weather updates of a city
-
-Note: Modules list is kept low since I'm more interested on using this as a wrapper
+- speedtest | Test bot's Internet connection speed
+- CI | Automated CI system, you can trigger AOSP custom ROMs and custom recoveries building, with progress updating
+- cowsay
+- neofetch
+- And more...
 
 ## Wiki
 Want to see how this bot works or you want to create a module for this bot?
