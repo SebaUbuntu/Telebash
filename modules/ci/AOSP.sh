@@ -140,37 +140,37 @@ ci_message "Setting up environment..."
 . build/envsetup.sh
 
 ci_message "Lunching..."
-lunch ${CI_LUNCH_PREFIX}_${CI_DEVICE}-${CI_LUNCH_SUFFIX} &> lunch_log.txt
+lunch ${CI_LUNCH_PREFIX}_${CI_DEVICE}-${CI_LUNCH_SUFFIX} &> ${CI_DEVICE}-lunch_log.txt
 CI_LUNCH_STATUS=$?
 if [ $CI_LUNCH_STATUS != 0 ]; then
 	CI_BUILD_END=$(date +"%s")
 	CI_BUILD_DURATION=$(( CI_BUILD_END - CI_BUILD_START ))
 	ci_message "Build failed at lunch in $(( CI_BUILD_DURATION / 60 )) minute(s) and $(( CI_BUILD_DURATION % 60 )) seconds"
-	telegram sendDocument --chat_id "$CI_CHANNEL_ID" --document "lunch_log.txt" --reply_to_message_id "$CI_MESSAGE_ID"
+	telegram sendDocument --chat_id "$CI_CHANNEL_ID" --document "${CI_DEVICE}-lunch_log.txt" --reply_to_message_id "$CI_MESSAGE_ID"
 	exit
 fi
 
 if [ "$CI_CLEAN" != "" ]; then
 	ci_message "Cleaning (mka $CI_CLEAN)..."
-	mka $CI_CLEAN &> clean_log.txt
+	mka $CI_CLEAN &> ${CI_DEVICE}-clean_log.txt
 	CI_CLEAN_STATUS=$?
 	if [ $CI_CLEAN_STATUS != 0 ]; then
 		CI_BUILD_END=$(date +"%s")
 		CI_BUILD_DURATION=$(( CI_BUILD_END - CI_BUILD_START ))
 		ci_message "Build failed at cleaning in $(( CI_BUILD_DURATION / 60 )) minute(s) and $(( CI_BUILD_DURATION % 60 )) seconds"
-		telegram sendDocument --chat_id "$CI_CHANNEL_ID" --document "clean_log.txt" --reply_to_message_id "$CI_MESSAGE_ID"
+		telegram sendDocument --chat_id "$CI_CHANNEL_ID" --document "${CI_DEVICE}-clean_log.txt" --reply_to_message_id "$CI_MESSAGE_ID"
 		exit
 	fi
 fi
 
 ci_message "Building..."
-mka $CI_BUILD_TARGET -j$(nproc --all) &> build_log.txt
+mka $CI_BUILD_TARGET -j12 &> ${CI_DEVICE}-build_log.txt
 CI_BUILD_STATUS=$?
 if [ $CI_BUILD_STATUS != 0 ]; then
 	CI_BUILD_END=$(date +"%s")
 	CI_BUILD_DURATION=$(( CI_BUILD_END - CI_BUILD_START ))
 	ci_message "Build failed at building in $(( CI_BUILD_DURATION / 60 )) minute(s) and $(( CI_BUILD_DURATION % 60 )) seconds"
-	telegram sendDocument --chat_id "$CI_CHANNEL_ID" --document "build_log.txt" --reply_to_message_id "$CI_MESSAGE_ID"
+	telegram sendDocument --chat_id "$CI_CHANNEL_ID" --document "${CI_DEVICE}-build_log.txt" --reply_to_message_id "$CI_MESSAGE_ID"
 	exit
 fi
 
