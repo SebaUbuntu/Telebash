@@ -12,7 +12,7 @@ CI_AOSP_PROJECT_NAME="Project Fluid"
 # Android version to display on Telegram post
 CI_AOSP_PROJECT_VERSION=10
 # These next 2 values are needed to lunch (e.g. "lineage"_whyred-"userdebug")
-CI_LUNCH_PREFIX=fluid
+#CI_LUNCH_PREFIX=fluid
 CI_LUNCH_SUFFIX=userdebug
 # Target to build (e.g. to build a ROM's OTA package, use "bacon" or "otapackage", for a recovery project, use "recoveryimage")
 CI_BUILD_TARGET=bacon

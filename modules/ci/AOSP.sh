@@ -140,6 +140,9 @@ ci_message "Setting up environment..."
 . build/envsetup.sh
 
 ci_message "Lunching..."
+DEVICE_MAKEFILE=$(find device/*/$CI_DEVICE|grep _$CI_DEVICE|grep mk|grep -iv factory|grep -iv aosp|cut -d/ -f 4|sed -e s'/.mk//')
+CI_LUNCH_PREFIX=$(echo $DEVICE_MAKEFILE|cut -d_ -f1)
+
 lunch ${CI_LUNCH_PREFIX}_${CI_DEVICE}-${CI_LUNCH_SUFFIX} &> ${CI_DEVICE}-lunch_log.txt
 CI_LUNCH_STATUS=$?
 if [ $CI_LUNCH_STATUS != 0 ]; then
